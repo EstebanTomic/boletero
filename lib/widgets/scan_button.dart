@@ -54,11 +54,7 @@ class ScanButton extends StatelessWidget {
         ''';
         debugPrint('resultado: $barcodeScanRes');
 
-        // Guardamos en la BD
-        final scanListProvider = Provider.of<ScanListProvider>(context, listen: false);
-        scanListProvider.newScan(barcodeScanRes);
-
-        
+       
          // Agregamos comillas a version para poder parsear como XML
         String result = barcodeScanRes.replaceAll("version= 1.0", "version= \"1.0\"");
         //debugPrint('result: $result');
@@ -68,11 +64,15 @@ class ScanButton extends StatelessWidget {
         // Extraemos data desde parseo
         final ted = document.findElements('TED').first;
         final dd = ted.findElements('DD').first;
-        final rut = dd.findElements('RE').first;
-        final monto = dd.findElements('MNT').first;
-        final folio = dd.findElements('F').first;
-        final fecha = dd.findElements('FE').first;
+        final rut = dd.findElements('RE').first.innerText.toString();
+        final monto = dd.findElements('MNT').first.innerText.toString();
+        final folio = dd.findElements('F').first.innerText.toString();
+        final fecha = dd.findElements('FE').first.innerText.toString();
 
+        // Guardamos en la BD
+        final scanListProvider = Provider.of<ScanListProvider>(context, listen: false);
+        scanListProvider.newScan(barcodeScanRes, monto, rut, folio, fecha);
+        debugPrint('rut: $rut');
         debugPrint('rut: $rut');
         debugPrint('monto: $monto');
         debugPrint('folio: $folio');

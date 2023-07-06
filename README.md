@@ -1,6 +1,8 @@
-# boletero_qr_reader
+# boletero_pdf417_reader
 
-A new Flutter project.
+Proyecto en Flutter que genera una aplicación que permite la lectura del timbre electronico del SII que se encuentra en todas las boletas generadas al momento de realizar una compra, con el fin de registrarla y poder tener un respaldo digital de ella.
+
+Project in Flutter that generates an application that allows the reading of the electronic stamp of the SII that is found in all the tickets generated at the time of making a purchase, in order to register it and be able to have a digital backup of it.
 
 ## Getting Started
 

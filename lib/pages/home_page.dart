@@ -53,13 +53,13 @@ class _HomePageBody extends StatelessWidget {
 
 
     // TODO: Temporal leer BD
-    final tempScan = new ScanModel(valor: 'PRUEBA');
+    //final tempScan = new ScanModel(valor: 'PRUEBA');
     //DBProvider.db.newScan(tempScan);
     //DBProvider.db.getScanById(2).then((scan) => print(scan?.valor));
     
     switch (currentIndex) {
       case 0:
-        scanListProvider.loadScanByType('geo');
+        scanListProvider.loadScanByType('boleta');
         return const TicketRegisterPage();
       case 1:
       scanListProvider.loadScanByType('http');

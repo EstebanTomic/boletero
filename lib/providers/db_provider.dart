@@ -28,7 +28,11 @@ class DBProvider {
           CREATE TABLE Scans(
             id INTEGER PRIMARY KEY,
             tipo TEXT,
-            valor TEXT
+            valor TEXT,
+            monto TEXT,
+            rut TEXT,
+            folio TEXT,
+            fecha TEXT
           )
         ''');
     });

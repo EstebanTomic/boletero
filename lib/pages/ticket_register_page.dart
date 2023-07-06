@@ -24,7 +24,7 @@ class TicketRegisterPage extends StatelessWidget {
         },
         child: ListTile(
           leading: Icon(Icons.text_snippet_outlined, color: Theme.of(context).primaryColor),
-          title: Text(scans[i].valor),
+          title: Text(scans[i].monto),
           subtitle: Text(scans[i].id.toString()),
           trailing: Icon(Icons.keyboard_arrow_right, color: Colors.grey),
           onTap: () => print(scans[i].id.toString()),
