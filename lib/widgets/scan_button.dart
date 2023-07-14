@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:provider/provider.dart';
 import 'package:xml/xml.dart' as xml;
+import 'package:intl/intl.dart';
 
 class ScanButton extends StatelessWidget {
   const ScanButton({super.key});
@@ -13,12 +14,11 @@ class ScanButton extends StatelessWidget {
       elevation: 0,
       child: const Icon(Icons.filter_center_focus),
       onPressed: () async {
+        // LLamado a Camara
+       // String barcodeScanRes = await FlutterBarcodeScanner.scanBarcode('#3D8BEF', 'Cancelar', false, ScanMode.BARCODE);
 
-      // LLamado a Camara
-      String barcodeScanRes = await FlutterBarcodeScanner.scanBarcode('#3D8BEF', 'Cancelar', false, ScanMode.BARCODE);
-      
-      // Respuesta de prueba
-    /*  String barcodeScanRes = '''
+        // Respuesta de prueba
+        String barcodeScanRes = '''
 <TED version= 1.0>
   <DD>
     <RE>77215640-5</RE>
@@ -52,32 +52,39 @@ class ScanButton extends StatelessWidget {
   <FRMT algoritmo='SHA1withRSA'>22QKSD2MfSWGAa5XUmUilq/Rs1iKfVi6fMhMt/zstH5ge0os9MkHi979+sq0KHluhwCLNnNZgF+Dagy75G5MBQ==</FRMT>
 </TED>
         ''';
-        */
+        
+
         debugPrint('resultado: $barcodeScanRes');
+        // Si es -1 no hacemos nada, es el boton cancelar
+        if (barcodeScanRes != '-1') {
+          // Agregamos comillas a version para poder parsear como XML
+          String result =
+              barcodeScanRes.replaceAll("version= 1.0", "version= \"1.0\"");
+          //debugPrint('result: $result');
+          final document = xml.XmlDocument.parse(result);
+          debugPrint('resultadoParseado: $document');
 
-       
-         // Agregamos comillas a version para poder parsear como XML
-        String result = barcodeScanRes.replaceAll("version= 1.0", "version= \"1.0\"");
-        //debugPrint('result: $result');
-        final document = xml.XmlDocument.parse(result);
-        debugPrint('resultadoParseado: $document');
-                
-        // Extraemos data desde parseo
-        final ted = document.findElements('TED').first;
-        final dd = ted.findElements('DD').first;
-        final rut = dd.findElements('RE').first.innerText.toString();
-        final monto = dd.findElements('MNT').first.innerText.toString();
-        final folio = dd.findElements('F').first.innerText.toString();
-        final fecha = dd.findElements('FE').first.innerText.toString();
+          // Extraemos data desde parseo
+          final ted = document.findElements('TED').first;
+          final dd = ted.findElements('DD').first;
+          final rut = dd.findElements('RE').first.innerText.toString();
+          final monto = dd.findElements('MNT').first.innerText.toString();
+          final folio = dd.findElements('F').first.innerText.toString();
+          final fecha = dd.findElements('FE').first.innerText.toString();
 
-        // Guardamos en la BD
-        final scanListProvider = Provider.of<ScanListProvider>(context, listen: false);
-        scanListProvider.newScan(barcodeScanRes, monto, rut, folio, fecha);
-        debugPrint('rut: $rut');
-        debugPrint('monto: $monto');
-        debugPrint('folio: $folio');
-        debugPrint('fecha: $fecha');
+          final DateTime fechaDT = DateTime.parse(fecha);
+          final DateFormat formatter = DateFormat('dd-MM-yyyy');
+          final String fechaFormatted = formatter.format(fechaDT);
 
+          // Guardamos en la BD
+          final scanListProvider =
+              Provider.of<ScanListProvider>(context, listen: false);
+          scanListProvider.newScan(barcodeScanRes, monto, rut, folio, fechaFormatted);
+          debugPrint('rut: $rut');
+          debugPrint('monto: $monto');
+          debugPrint('folio: $folio');
+          debugPrint('fecha: $fechaFormatted');
+        }
       },
     );
   }
