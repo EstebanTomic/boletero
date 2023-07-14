@@ -15,9 +15,10 @@ class ScanButton extends StatelessWidget {
       child: const Icon(Icons.filter_center_focus),
       onPressed: () async {
         // LLamado a Camara
-       // String barcodeScanRes = await FlutterBarcodeScanner.scanBarcode('#3D8BEF', 'Cancelar', false, ScanMode.BARCODE);
+      String barcodeScanRes = await FlutterBarcodeScanner.scanBarcode('#3D8BEF', 'Cancelar', false, ScanMode.BARCODE);
 
         // Respuesta de prueba
+        /*
         String barcodeScanRes = '''
 <TED version= 1.0>
   <DD>
@@ -52,6 +53,7 @@ class ScanButton extends StatelessWidget {
   <FRMT algoritmo='SHA1withRSA'>22QKSD2MfSWGAa5XUmUilq/Rs1iKfVi6fMhMt/zstH5ge0os9MkHi979+sq0KHluhwCLNnNZgF+Dagy75G5MBQ==</FRMT>
 </TED>
         ''';
+        */      
         
 
         debugPrint('resultado: $barcodeScanRes');
