@@ -15,7 +15,7 @@ class ScanButton extends StatelessWidget {
       child: const Icon(Icons.filter_center_focus),
       onPressed: () async {
         // LLamado a Camara
-      String barcodeScanRes = await FlutterBarcodeScanner.scanBarcode('#3D8BEF', 'Cancelar', false, ScanMode.BARCODE);
+      String barcodeScanRes = await FlutterBarcodeScanner.scanBarcode('#000000', 'Cancelar', false, ScanMode.BARCODE);
 
         // Respuesta de prueba
         /*
