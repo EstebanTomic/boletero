@@ -1,4 +1,4 @@
-import 'package:boletero_qr_reader/providers/scan_list_provider.dart';
+import 'package:boletero/providers/scan_list_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:provider/provider.dart';
@@ -14,11 +14,11 @@ class ScanButton extends StatelessWidget {
       elevation: 0,
       child: const Icon(Icons.filter_center_focus),
       onPressed: () async {
-        // LLamado a Camara
+      // LLamado a Camara
       String barcodeScanRes = await FlutterBarcodeScanner.scanBarcode('#000000', 'Cancelar', false, ScanMode.BARCODE);
 
+/*
         // Respuesta de prueba
-        /*
         String barcodeScanRes = '''
 <TED version= 1.0>
   <DD>
@@ -53,8 +53,8 @@ class ScanButton extends StatelessWidget {
   <FRMT algoritmo='SHA1withRSA'>22QKSD2MfSWGAa5XUmUilq/Rs1iKfVi6fMhMt/zstH5ge0os9MkHi979+sq0KHluhwCLNnNZgF+Dagy75G5MBQ==</FRMT>
 </TED>
         ''';
-        */      
-        
+          */
+      
 
         debugPrint('resultado: $barcodeScanRes');
         // Si es -1 no hacemos nada, es el boton cancelar
@@ -74,18 +74,43 @@ class ScanButton extends StatelessWidget {
           final folio = dd.findElements('F').first.innerText.toString();
           final fecha = dd.findElements('FE').first.innerText.toString();
 
+          //TODO: Generar Helpers para Formatos
+          final montoFormatted = NumberFormat.currency(name: 'CLP', decimalDigits: 0, symbol: '\$').format(int.parse(monto));
+          // final montoFormatted = NumberFormat.simpleCurrency(name: 'es_US').format(int.parse(monto));
+
           final DateTime fechaDT = DateTime.parse(fecha);
           final DateFormat formatter = DateFormat('dd-MM-yyyy');
           final String fechaFormatted = formatter.format(fechaDT);
+          String empresa = '';
+
+          switch (rut) {
+            case '92642000-3':
+              empresa = 'Librería Nacional';
+            break;
+            case '76031071-9':
+              empresa = 'Salcobrand';
+            break;
+            case '77215640-5':
+              empresa = 'Copec';
+            break;
+            case '76833720-9':
+              empresa = 'Acuenta';
+            break;
+            case '77482034-5':
+              empresa = 'Muvap';
+            break;
+          }
+
 
           // Guardamos en la BD
           final scanListProvider =
               Provider.of<ScanListProvider>(context, listen: false);
-          scanListProvider.newScan(barcodeScanRes, monto, rut, folio, fechaFormatted);
+          scanListProvider.newScan(barcodeScanRes, montoFormatted, rut, folio, fechaFormatted, empresa);
           debugPrint('rut: $rut');
-          debugPrint('monto: $monto');
+          debugPrint('monto: $montoFormatted');
           debugPrint('folio: $folio');
           debugPrint('fecha: $fechaFormatted');
+          debugPrint('empresa: $empresa');
         }
       },
     );

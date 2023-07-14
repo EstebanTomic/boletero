@@ -1,7 +1,7 @@
-import 'package:boletero_qr_reader/pages/home_page.dart';
-import 'package:boletero_qr_reader/pages/ticket_register_page.dart';
-import 'package:boletero_qr_reader/providers/scan_list_provider.dart';
-import 'package:boletero_qr_reader/providers/ui_provider.dart';
+import 'package:boletero/pages/home_page.dart';
+import 'package:boletero/pages/ticket_register_page.dart';
+import 'package:boletero/providers/scan_list_provider.dart';
+import 'package:boletero/providers/ui_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        title: 'Boletero QR Reader',
+        title: 'Boletero',
         initialRoute: 'home',
         routes: {
           'home': ( _ ) => const HomePage(),

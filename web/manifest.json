@@ -1,6 +1,6 @@
 {
-    "name": "boletero_qr_reader",
-    "short_name": "boletero_qr_reader",
+    "name": "boletero",
+    "short_name": "boletero",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#hexcode",

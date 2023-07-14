@@ -28,21 +28,21 @@ class TicketRegisterPage extends StatelessWidget {
                             .deleteScanById(scans[i].id?.toInt() ?? 0);
                       },
                       child: Card(
-                        margin: const EdgeInsets.all(8),
-                        elevation: 5,
+                        margin: const EdgeInsets.all(6),
+                        elevation: 3,
                         child: ListTile(
-                          dense: true,
-                          contentPadding: const EdgeInsets.all(12),
+                          //dense: true,
+                          //contentPadding: const EdgeInsets.all(12),
                           leading: Icon(Icons.text_snippet_outlined,
                               color: Theme.of(context).primaryColor),
                           title:
-                              Text(scans[i].fecha + '\n' + scans[i].rut + '\n',
+                              Text(scans[i].fecha + '\n' + scans[i].rut + '\n' + scans[i].empresa,
                               style: TextStyle(fontSize: 16)),
                           subtitle:
                               Text('Folio: ' + scans[i].folio + '\n',
                               style: TextStyle(fontSize: 14)),
                           trailing: Text(
-                            '\$ ' + scans[i].monto,
+                            scans[i].monto,
                             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                           ),
                           onTap: () => print(scans[i].id.toString()),

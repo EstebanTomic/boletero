@@ -1,7 +1,6 @@
-import 'package:boletero_qr_reader/pages/ticket_register_page.dart';
-import 'package:boletero_qr_reader/providers/db_provider.dart';
-import 'package:boletero_qr_reader/providers/scan_list_provider.dart';
-import 'package:boletero_qr_reader/providers/ui_provider.dart';
+import 'package:boletero/pages/ticket_register_page.dart';
+import 'package:boletero/providers/scan_list_provider.dart';
+import 'package:boletero/providers/ui_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -18,8 +17,9 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         elevation: 0,
-        title: const Text('Boletero'),
+        title: const Text('BOLETERO'),
         actions: [
           IconButton(
             icon: Icon(Icons.delete_forever),

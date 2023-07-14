@@ -5,8 +5,8 @@ import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
 
-import 'package:boletero_qr_reader/models/scan_model.dart';
-export 'package:boletero_qr_reader/models/scan_model.dart';
+import 'package:boletero/models/scan_model.dart';
+export 'package:boletero/models/scan_model.dart';
 
 class DBProvider {
   static Database? _database;
@@ -18,23 +18,24 @@ class DBProvider {
   Future<Database> initDB() async {
     // Path de donde almacenamos la BD
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
-    final path = join(documentsDirectory.path, 'BoleteroDB.db');
+    final path = join(documentsDirectory.path, 'BDB.db');
     debugPrint('path: $path');
 
     // Crear base de datos
     return await openDatabase(path, version: 1, onOpen: (db) {},
         onCreate: (Database db, int version) async {
-      await db.execute('''
-          CREATE TABLE Scans(
-            id INTEGER PRIMARY KEY,
-            tipo TEXT,
-            valor TEXT,
-            monto TEXT,
-            rut TEXT,
-            folio TEXT,
-            fecha TEXT
-          )
-        ''');
+        await db.execute('''
+            CREATE TABLE Scans(
+              id INTEGER PRIMARY KEY,
+              tipo TEXT,
+              valor TEXT,
+              monto TEXT,
+              rut TEXT,
+              folio TEXT,
+              fecha TEXT,
+              empresa TEXT
+            )
+          ''');
     });
   }
 
@@ -103,4 +104,5 @@ class DBProvider {
     final res = await db.delete('Scans');
     return res;
   }
+
 }
