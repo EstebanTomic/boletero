@@ -1,3 +1,4 @@
+import 'package:barcode_widget/barcode_widget.dart';
 import 'package:boletero/models/scan_model.dart';
 import 'package:flutter/material.dart';
 
@@ -14,17 +15,19 @@ class BoletasPage extends StatelessWidget {
     String razonSocial = scan.empresa;
     String fecha = scan.fecha;
     String monto = scan.monto;
+    String data = scan.valor;
 
     return Scaffold(
         body: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         // Cabecera
         CabeceraBoleta(rut: rut, folio: folio),
         DetalleComercio(razonSocial: razonSocial),
-        DetalleCompra(fecha: fecha, monto: monto)
+        DetalleCompra(fecha: fecha, monto: monto),
+        PDF417Barcode(data: data)
+
         // Detalle Comercio
-        
       ],
     ));
   }
@@ -87,9 +90,9 @@ class DetalleComercio extends StatelessWidget {
   const DetalleComercio({
     super.key,
     required this.razonSocial,
-    });
+  });
 
-    final String razonSocial;
+  final String razonSocial;
 
   @override
   Widget build(BuildContext context) {
@@ -123,15 +126,10 @@ class DetalleComercio extends StatelessWidget {
 }
 
 class DetalleCompra extends StatelessWidget {
-  const DetalleCompra({
-    super.key,
-    required this.fecha,
-    required this.monto
-    });
+  const DetalleCompra({super.key, required this.fecha, required this.monto});
 
-    final String fecha;
-    final String monto;
-
+  final String fecha;
+  final String monto;
 
   @override
   Widget build(BuildContext context) {
@@ -163,4 +161,32 @@ class DetalleCompra extends StatelessWidget {
   }
 }
 
+class PDF417Barcode extends StatelessWidget {
+  const PDF417Barcode({
+    super.key,
+    required this.data,
+  });
 
+  final String data;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 330,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          BarcodeWidget(
+            barcode: Barcode.pdf417(),
+            data: data,
+          ),
+          Text(
+            "Timbre Electrónico SII",
+            style: const TextStyle(
+                fontSize: 16.0, color: Color(0xFF000000), fontFamily: "Roboto"),
+          ),
+        ],
+      ),
+    );
+  }
+}

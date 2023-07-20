@@ -9,7 +9,6 @@ import 'package:boletero/pages/ticket_register_page.dart';
 
 // import 'package:flutter/rendering.dart';
 
-
 void main() {
   // Habilitar Lineas debug
   //debugPaintSizeEnabled=true;
@@ -32,15 +31,14 @@ class MyApp extends StatelessWidget {
         title: 'Boletero',
         initialRoute: 'home',
         routes: {
-          'home': ( _ ) => const HomePage(),
-          'misBoletas': ( _ ) => const TicketRegisterPage(),
-          'boleta': ( _ ) => const BoletasPage(),
+          'home': (_) => const HomePage(),
+          'misBoletas': (_) => const TicketRegisterPage(),
+          'boleta': (_) => const BoletasPage(),
         },
         theme: ThemeData(
           primaryColor: Colors.black87,
           floatingActionButtonTheme: const FloatingActionButtonThemeData(
-            backgroundColor: Colors.black87
-          ),
+              backgroundColor: Colors.black87),
           appBarTheme: const AppBarTheme(
             iconTheme: IconThemeData(color: Colors.white),
             color: Colors.black87, //<-- SEE HERE
