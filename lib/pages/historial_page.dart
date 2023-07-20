@@ -5,7 +5,7 @@ class HistorialPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(child: Text('Mis Boletas'),
+    return const Center(child: Text('Proximamente'),
     );
   }
 }

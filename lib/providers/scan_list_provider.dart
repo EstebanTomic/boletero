@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:boletero_qr_reader/providers/db_provider.dart';
+import 'package:boletero/providers/db_provider.dart';
 
 class ScanListProvider extends ChangeNotifier {
 
   List<ScanModel> scans = [];
   String selectedType = 'http';
 
-  newScan( String valor, String monto, String rut, String folio, String fecha) async {
-    final nuevoScan = ScanModel(valor: valor, monto: monto, rut: rut, folio: folio, fecha: fecha);
+  newScan( String valor, String monto, String rut, String folio, String fecha, String empresa) async {
+    final nuevoScan = ScanModel(valor: valor, monto: monto, rut: rut, folio: folio, fecha: fecha, empresa: empresa);
     final id = await DBProvider.db.newScan(nuevoScan);
     //Asignar el ID de la base de datos al modelo
     nuevoScan.id = id;
