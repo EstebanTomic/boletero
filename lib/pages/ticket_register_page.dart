@@ -45,7 +45,8 @@ class TicketRegisterPage extends StatelessWidget {
                             scans[i].monto,
                             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                           ),
-                          onTap: () => print(scans[i].id.toString()),
+                          //onTap: () => print(scans[i].id.toString()),
+                          onTap: () => Navigator.pushNamed(context, 'boleta', arguments: scans[i])
                         ),
                       ),
                     ))));

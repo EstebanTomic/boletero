@@ -1,11 +1,18 @@
-import 'package:boletero/pages/home_page.dart';
-import 'package:boletero/pages/ticket_register_page.dart';
 import 'package:boletero/providers/scan_list_provider.dart';
 import 'package:boletero/providers/ui_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'package:boletero/pages/boletas_page.dart';
+import 'package:boletero/pages/home_page.dart';
+import 'package:boletero/pages/ticket_register_page.dart';
+
+// import 'package:flutter/rendering.dart';
+
+
 void main() {
+  // Habilitar Lineas debug
+  //debugPaintSizeEnabled=true;
   runApp(const MyApp());
 }
 
@@ -26,7 +33,8 @@ class MyApp extends StatelessWidget {
         initialRoute: 'home',
         routes: {
           'home': ( _ ) => const HomePage(),
-          'Boleta': ( _ ) => const TicketRegisterPage()
+          'misBoletas': ( _ ) => const TicketRegisterPage(),
+          'boleta': ( _ ) => const BoletasPage(),
         },
         theme: ThemeData(
           primaryColor: Colors.black87,
