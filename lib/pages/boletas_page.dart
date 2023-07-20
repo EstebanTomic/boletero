@@ -18,18 +18,26 @@ class BoletasPage extends StatelessWidget {
     String data = scan.valor;
 
     return Scaffold(
-        body: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        // Cabecera
-        CabeceraBoleta(rut: rut, folio: folio),
-        DetalleComercio(razonSocial: razonSocial),
-        DetalleCompra(fecha: fecha, monto: monto),
-        PDF417Barcode(data: data)
-
-        // Detalle Comercio
-      ],
-    ));
+        backgroundColor: Colors.black87,
+        body: Center(
+          child: Container(
+            width: 400,
+            height: 500,
+            decoration: const BoxDecoration(
+                //borderRadius: BorderRadius.all(Radius.circular(15)),
+                color: Colors.white),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                // Cabecera
+                CabeceraBoleta(rut: rut, folio: folio),
+                DetalleComercio(razonSocial: razonSocial),
+                DetalleCompra(fecha: fecha, monto: monto),
+                PDF417Barcode(data: data)
+              ],
+            ),
+          ),
+        ));
   }
 }
 
@@ -47,13 +55,13 @@ class CabeceraBoleta extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       alignment: Alignment.center,
-      width: 300,
+      width: 330,
       height: 90,
       decoration: BoxDecoration(
         border: Border.all(width: 2.5),
       ),
       child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
           mainAxisSize: MainAxisSize.max,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
@@ -98,7 +106,8 @@ class DetalleComercio extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       alignment: Alignment.center,
-      height: 90,
+      width: 330,
+      height: 80,
       child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           mainAxisSize: MainAxisSize.max,
@@ -134,10 +143,10 @@ class DetalleCompra extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 300,
-      height: 90,
+      width: 330,
+      height: 100,
       child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
           mainAxisSize: MainAxisSize.max,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
@@ -148,13 +157,16 @@ class DetalleCompra extends StatelessWidget {
                   color: Color(0xFF000000),
                   fontFamily: "Roboto"),
             ),
-            Text(
-              "MONTO TOTAL: $monto",
-              style: const TextStyle(
-                  fontSize: 18.0,
-                  fontWeight: FontWeight.bold,
-                  color: Color(0xFF000000),
-                  fontFamily: "Roboto"),
+            Align(
+              alignment: Alignment.centerRight,
+              child: Text(
+                "MONTO TOTAL: $monto",
+                style: const TextStyle(
+                    fontSize: 18.0,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFF000000),
+                    fontFamily: "Roboto"),
+              ),
             ),
           ]),
     );
@@ -171,22 +183,25 @@ class PDF417Barcode extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 330,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          BarcodeWidget(
-            barcode: Barcode.pdf417(),
-            data: data,
-          ),
-          Text(
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        BarcodeWidget(
+          barcode: Barcode.pdf417(),
+          data: data,
+          width: 330,
+          height: 120,
+        ),
+        Align(
+          alignment: Alignment.topCenter,
+          child: Text(
             "Timbre Electrónico SII",
             style: const TextStyle(
                 fontSize: 16.0, color: Color(0xFF000000), fontFamily: "Roboto"),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

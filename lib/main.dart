@@ -7,11 +7,11 @@ import 'package:boletero/pages/boletas_page.dart';
 import 'package:boletero/pages/home_page.dart';
 import 'package:boletero/pages/ticket_register_page.dart';
 
-// import 'package:flutter/rendering.dart';
+//import 'package:flutter/rendering.dart';
 
 void main() {
   // Habilitar Lineas debug
-  //debugPaintSizeEnabled=true;
+  //debugPaintSizeEnabled = true;
   runApp(const MyApp());
 }
 
