@@ -1,6 +1,13 @@
+import 'dart:io';
+import 'dart:typed_data';
+
 import 'package:barcode_widget/barcode_widget.dart';
 import 'package:boletero/models/scan_model.dart';
 import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:share_plus/share_plus.dart';
+import 'package:image_gallery_saver/image_gallery_saver.dart';
+import 'package:screenshot/screenshot.dart';
 
 class BoletasPage extends StatelessWidget {
   const BoletasPage({super.key});
@@ -10,6 +17,7 @@ class BoletasPage extends StatelessWidget {
     final ScanModel scan =
         ModalRoute.of(context)!.settings.arguments as ScanModel;
 
+    final controller = ScreenshotController();
     String rut = scan.rut;
     String folio = scan.folio;
     String razonSocial = scan.empresa;
@@ -19,24 +27,33 @@ class BoletasPage extends StatelessWidget {
 
     return Scaffold(
         backgroundColor: Colors.black87,
-        body: Center(
-          child: Container(
-            width: 400,
-            height: 500,
-            decoration: const BoxDecoration(
-                //borderRadius: BorderRadius.all(Radius.circular(15)),
-                color: Colors.white),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                // Cabecera
-                CabeceraBoleta(rut: rut, folio: folio),
-                DetalleComercio(razonSocial: razonSocial),
-                DetalleCompra(fecha: fecha, monto: monto),
-                PDF417Barcode(data: data)
-              ],
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Center(
+              child: Screenshot(
+                controller: controller,
+                child: Container(
+                  width: 400,
+                  height: 500,
+                  decoration: const BoxDecoration(
+                      //borderRadius: BorderRadius.all(Radius.circular(15)),
+                      color: Colors.white),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      // Cabecera
+                      CabeceraBoleta(rut: rut, folio: folio),
+                      DetalleComercio(razonSocial: razonSocial),
+                      DetalleCompra(fecha: fecha, monto: monto),
+                      PDF417Barcode(data: data),
+                    ],
+                  ),
+                ),
+              ),
             ),
-          ),
+            ShareButton(controller: controller),
+          ],
         ));
   }
 }
@@ -56,7 +73,7 @@ class CabeceraBoleta extends StatelessWidget {
     return Container(
       alignment: Alignment.center,
       width: 330,
-      height: 90,
+      height: 110,
       decoration: BoxDecoration(
         border: Border.all(width: 2.5),
       ),
@@ -68,7 +85,7 @@ class CabeceraBoleta extends StatelessWidget {
             Text(
               "R.U.T.: $rut",
               style: const TextStyle(
-                  fontSize: 24.0,
+                  fontSize: 22.0,
                   color: Color(0xFF000000),
                   fontWeight: FontWeight.bold,
                   fontFamily: "Roboto"),
@@ -76,7 +93,7 @@ class CabeceraBoleta extends StatelessWidget {
             Text(
               "BOLETA ELECTRÓNICA",
               style: const TextStyle(
-                  fontSize: 24.0,
+                  fontSize: 22.0,
                   color: Color(0xFF000000),
                   fontWeight: FontWeight.bold,
                   fontFamily: "Roboto"),
@@ -84,7 +101,7 @@ class CabeceraBoleta extends StatelessWidget {
             Text(
               "N°: $folio",
               style: const TextStyle(
-                  fontSize: 24.0,
+                  fontSize: 22.0,
                   color: Color(0xFF000000),
                   fontWeight: FontWeight.bold,
                   fontFamily: "Roboto"),
@@ -203,5 +220,50 @@ class PDF417Barcode extends StatelessWidget {
         ),
       ],
     );
+  }
+}
+
+class ShareButton extends StatelessWidget {
+  const ShareButton({super.key, required this.controller});
+  final ScreenshotController controller;
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      child: IconButton(
+        onPressed: () async {
+          //Share.share('TEST');
+          final image = await controller.capture();
+          if (image == null) return;
+          //await saveImage(image);
+          await saveAndShare(image);
+        },
+        icon: Icon(Icons.share),
+      ),
+    );
+  }
+}
+
+Future<String> saveImage(Uint8List bytes) async {
+  //await [Permissions.storage].request();
+  final time = DateTime.now()
+      .toIso8601String()
+      .replaceAll('.', '-')
+      .replaceAll(':', '-');
+  final name = 'boleta_$time';
+  final result = await ImageGallerySaver.saveImage(bytes, name: name);
+  return result['filePath'];
+}
+
+Future<String> saveAndShare(Uint8List bytes) async {
+  try {
+    final directory = await getApplicationDocumentsDirectory();
+    final image = File('${directory.path}/flutter.png');
+    await image.writeAsBytes(bytes);
+    await Share.shareXFiles([XFile(image.path)]);
+    return 'ok';
+  } catch (e) {
+    print(e);
+    rethrow;
   }
 }

@@ -42,6 +42,12 @@ dependencies:
   xml: ^6.3.0
   intl: ^0.18.1
   barcode_widget: ^2.0.4
+  share_plus: ^7.0.2
+  screenshot: ^2.1.0
+  image_gallery_saver: ^2.0.3
+  html: ^0.15.4
+  flutter_speed_dial: ^7.0.0
+
 
 dev_dependencies:
   flutter_test:
