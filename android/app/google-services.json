@@ -29,6 +29,13 @@
             {
               "client_id": "428334466853-8g44aocdl8v4jo73k8qcdg5kf7qbtthl.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "428334466853-gmiarf27pflht5qh6et2aa0rb750uaet.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.boletero"
+              }
             }
           ]
         }
