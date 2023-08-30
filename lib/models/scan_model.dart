@@ -15,6 +15,7 @@ class ScanModel {
   String folio;
   String fecha;
   String empresa;
+  String razonSocial;
 
   ScanModel({
     this.id,
@@ -25,6 +26,7 @@ class ScanModel {
     required this.folio,
     required this.fecha,
     required this.empresa,
+    required this.razonSocial,
   }) {
     if (this.valor.contains('http')) {
       this.tipo = 'http';
@@ -42,6 +44,7 @@ class ScanModel {
         folio: json["folio"],
         fecha: json["fecha"],
         empresa: json["empresa"],
+        razonSocial: json["razonSocial"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -52,6 +55,7 @@ class ScanModel {
         "rut": rut,
         "folio": folio,
         "fecha": fecha,
-        "empresa": empresa
+        "empresa": empresa,
+        "razonSocial": razonSocial,
       };
 }

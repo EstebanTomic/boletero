@@ -4,6 +4,7 @@ import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:provider/provider.dart';
 import 'package:xml/xml.dart' as xml;
 import 'package:intl/intl.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 
 class ScanButton extends StatelessWidget {
   const ScanButton({super.key});
@@ -32,7 +33,7 @@ class ScanButton extends StatelessWidget {
     <CAF version='1.0'>
     <DA>
       <RE>77215640-5</RE>
-      <RS>ADMINISTRADORA DE VENTAS AL DETALLE LIMI</RS>
+      <RS>ADMINISTRADORA DE VENTAS AL DETALLE LIMITADA</RS>
       <TD>39</TD>
       <RNG>
         <D>433081956</D>
@@ -66,12 +67,13 @@ class ScanButton extends StatelessWidget {
           // Extraemos data desde parseo
           final ted = document.findElements('TED').first;
           final dd = ted.findElements('DD').first;
+          final caf = dd.findElements('CAF').first;
+          final da = caf.findElements('DA').first;
           final rut = dd.findElements('RE').first.innerText.toString();
           final monto = dd.findElements('MNT').first.innerText.toString();
           final folio = dd.findElements('F').first.innerText.toString();
           final fecha = dd.findElements('FE').first.innerText.toString();
-         // final razonSocial = dd.findElements('RS').first.innerText.toString();
-
+          final razonSocial = da.findElements('RS').first.innerText.toString();
 
           //TODO: Generar Helpers para Formatos
           final montoFormatted =
@@ -106,12 +108,24 @@ class ScanButton extends StatelessWidget {
           final scanListProvider =
               Provider.of<ScanListProvider>(context, listen: false);
           scanListProvider.newScan(barcodeScanRes, montoFormatted, rut, folio,
-              fechaFormatted, empresa);
+              fechaFormatted, empresa, razonSocial);
           debugPrint('rut: $rut');
           debugPrint('monto: $montoFormatted');
           debugPrint('folio: $folio');
           debugPrint('fecha: $fechaFormatted');
           debugPrint('empresa: $empresa');
+          final FirebaseAnalytics analytics = FirebaseAnalytics.instance;
+          await analytics.logEvent(
+            name: "register_boleta",
+            parameters: {
+              "content_type": "boleta",
+              "rut": rut,
+              "monto": montoFormatted,
+              "folio": folio,
+              "fecha": fechaFormatted,
+              "empresa": empresa,
+            },
+          );
         }
       },
     );

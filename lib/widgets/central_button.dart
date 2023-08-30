@@ -1,3 +1,4 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:intl/intl.dart';
@@ -100,7 +101,7 @@ class CentralButton extends StatelessWidget {
     <CAF version='1.0'>
     <DA>
       <RE>77215640-5</RE>
-      <RS>ADMINISTRADORA DE VENTAS AL DETALLE LIMI</RS>
+      <RS>ADMINISTRADORA DE VENTAS AL DETALLE LIMITADA</RS>
       <TD>39</TD>
       <RNG>
         <D>433081956</D>
@@ -136,10 +137,13 @@ class CentralButton extends StatelessWidget {
       // Extraemos data desde parseo
       final ted = document.findElements('TED').first;
       final dd = ted.findElements('DD').first;
+      final caf = dd.findElements('CAF').first;
+      final da = caf.findElements('DA').first;
       final rut = dd.findElements('RE').first.innerText.toString();
       final monto = dd.findElements('MNT').first.innerText.toString();
       final folio = dd.findElements('F').first.innerText.toString();
       final fecha = dd.findElements('FE').first.innerText.toString();
+      final razonSocial = da.findElements('RS').first.innerText.toString();
 
       //TODO: Generar Helpers para Formatos
       final montoFormatted =
@@ -173,13 +177,25 @@ class CentralButton extends StatelessWidget {
       // Guardamos en la BD
       final scanListProvider =
           Provider.of<ScanListProvider>(context, listen: false);
-      scanListProvider.newScan(
-          barcodeScanRes, montoFormatted, rut, folio, fechaFormatted, empresa);
+      scanListProvider.newScan(barcodeScanRes, montoFormatted, rut, folio,
+          fechaFormatted, empresa, razonSocial);
       debugPrint('rut: $rut');
       debugPrint('monto: $montoFormatted');
       debugPrint('folio: $folio');
       debugPrint('fecha: $fechaFormatted');
       debugPrint('empresa: $empresa');
+      final FirebaseAnalytics analytics = FirebaseAnalytics.instance;
+      await analytics.logEvent(
+        name: "register_boleta",
+        parameters: {
+          "content_type": "boleta",
+          "rut": rut,
+          "monto": montoFormatted,
+          "folio": folio,
+          "fecha": fechaFormatted,
+          "empresa": empresa,
+        },
+      );
     }
   }
 }

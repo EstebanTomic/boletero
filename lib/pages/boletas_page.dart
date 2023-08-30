@@ -20,7 +20,7 @@ class BoletasPage extends StatelessWidget {
     final controller = ScreenshotController();
     String rut = scan.rut;
     String folio = scan.folio;
-    String razonSocial = scan.empresa;
+    String razonSocial = scan.razonSocial;
     String fecha = scan.fecha;
     String monto = scan.monto;
     String data = scan.valor;
@@ -126,22 +126,14 @@ class DetalleComercio extends StatelessWidget {
       width: 330,
       height: 80,
       child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
           mainAxisSize: MainAxisSize.max,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             Text(
-              "S.I.I",
-              style: const TextStyle(
-                  fontSize: 24.0,
-                  color: Color(0xFF000000),
-                  fontWeight: FontWeight.bold,
-                  fontFamily: "Roboto"),
-            ),
-            Text(
               "$razonSocial",
               style: const TextStyle(
-                  fontSize: 24.0,
+                  fontSize: 20.0,
                   color: Color(0xFF000000),
                   fontWeight: FontWeight.bold,
                   fontFamily: "Roboto"),
