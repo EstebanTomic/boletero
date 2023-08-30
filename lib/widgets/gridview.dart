@@ -50,6 +50,11 @@ class CardGridView extends StatelessWidget {
                             style: TextStyle(
                                 fontWeight: FontWeight.bold, fontSize: 20),
                           ))),
+                TextButton(
+                  onPressed: () => throw Exception(),
+                  child: const Text("Throw Test Exception"),
+              ),
+
                 ],
               ),
               onTap: () =>

@@ -70,6 +70,8 @@ class ScanButton extends StatelessWidget {
           final monto = dd.findElements('MNT').first.innerText.toString();
           final folio = dd.findElements('F').first.innerText.toString();
           final fecha = dd.findElements('FE').first.innerText.toString();
+         // final razonSocial = dd.findElements('RS').first.innerText.toString();
+
 
           //TODO: Generar Helpers para Formatos
           final montoFormatted =

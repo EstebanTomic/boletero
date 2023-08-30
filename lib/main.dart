@@ -1,5 +1,7 @@
 import 'package:boletero/providers/scan_list_provider.dart';
 import 'package:boletero/providers/ui_provider.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -7,9 +9,13 @@ import 'package:boletero/pages/boletas_page.dart';
 import 'package:boletero/pages/home_page.dart';
 import 'package:boletero/pages/ticket_register_page.dart';
 
-void main() {
+void main() async  {
   // Habilitar Lineas debug
   //debugPaintSizeEnabled = true;
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  // Pass all uncaught "fatal" errors from the framework to Crashlytics
+  FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
   runApp(const MyApp());
 }
 
