@@ -1,11 +1,15 @@
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:xml/xml.dart' as xml;
 import 'package:boletero/providers/scan_list_provider.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
+
+import '../models/boleta_model.dart';
+import '../providers/boleta_provider.dart';
 
 class CentralButton extends StatelessWidget {
   const CentralButton({super.key});
@@ -55,7 +59,7 @@ class CentralButton extends StatelessWidget {
       // activeForegroundColor: Colors.red,
       // activeBackgroundColor: Colors.blue,
       elevation: 8.0,
-      animationCurve: Curves.elasticInOut,
+      //animationCurve: Curves.elasticInOut,
       isOpenOnStart: false,
       shape: const StadiumBorder(),
       children: [
@@ -184,6 +188,8 @@ class CentralButton extends StatelessWidget {
       debugPrint('folio: $folio');
       debugPrint('fecha: $fechaFormatted');
       debugPrint('empresa: $empresa');
+
+      // Analytics
       final FirebaseAnalytics analytics = FirebaseAnalytics.instance;
       await analytics.logEvent(
         name: "register_boleta",
@@ -196,6 +202,14 @@ class CentralButton extends StatelessWidget {
           "empresa": empresa,
         },
       );
+      // Guardamos en DB firebase
+      if(!mock){
+        final boletaRepo = Get.put(BoletaRepository());
+        final boleta = BoletaModel(xml: document.toString(), monto: monto, rut: rut, folio: folio, fecha: fecha, empresa: empresa, razonSocial: razonSocial);
+        await boletaRepo.createBoleta(boleta);
+      }
+
+
     }
   }
 }

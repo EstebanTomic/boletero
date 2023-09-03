@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../widgets/gridview.dart';
-import '../widgets/listview.dart';
 
 class TicketRegisterPage extends StatelessWidget {
   const TicketRegisterPage({super.key});

@@ -1,6 +1,9 @@
+import 'package:boletero/models/boleta_model.dart';
+import 'package:boletero/providers/boleta_provider.dart';
 import 'package:boletero/providers/scan_list_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:xml/xml.dart' as xml;
 import 'package:intl/intl.dart';
@@ -104,7 +107,7 @@ class ScanButton extends StatelessWidget {
               break;
           }
 
-          // Guardamos en la BD
+          // Guardamos en la BD Local
           final scanListProvider =
               Provider.of<ScanListProvider>(context, listen: false);
           scanListProvider.newScan(barcodeScanRes, montoFormatted, rut, folio,
@@ -114,6 +117,14 @@ class ScanButton extends StatelessWidget {
           debugPrint('folio: $folio');
           debugPrint('fecha: $fechaFormatted');
           debugPrint('empresa: $empresa');
+
+
+          // Guardamos en DB firebase
+          final boletaRepo = Get.put(BoletaRepository());
+          final boleta = BoletaModel(xml: document.toString(), monto: monto, rut: rut, folio: folio, fecha: fecha, empresa: empresa, razonSocial: razonSocial);
+          await boletaRepo.createBoleta(boleta);
+
+          // Generamos Analytics
           final FirebaseAnalytics analytics = FirebaseAnalytics.instance;
           await analytics.logEvent(
             name: "register_boleta",
