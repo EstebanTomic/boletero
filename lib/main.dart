@@ -1,3 +1,6 @@
+import 'package:boletero/pages/login_page.dart';
+import 'package:boletero/pages/sign_up.dart';
+import 'package:boletero/pages/splash_screen.dart';
 import 'package:boletero/providers/scan_list_provider.dart';
 import 'package:boletero/providers/ui_provider.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -9,7 +12,7 @@ import 'package:boletero/pages/boletas_page.dart';
 import 'package:boletero/pages/home_page.dart';
 import 'package:boletero/pages/ticket_register_page.dart';
 
-void main() async  {
+void main() async {
   // Habilitar Lineas debug
   //debugPaintSizeEnabled = true;
   WidgetsFlutterBinding.ensureInitialized();
@@ -33,8 +36,14 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Boletero',
-        initialRoute: 'home',
+        //initialRoute: 'home',
         routes: {
+          '/': (_) => SplashScreen(
+                // Here, you can decide whether to show the LoginPage or HomePage based on user authentication
+                child: LoginPage(),
+              ),
+          '/login': (_) => LoginPage(),
+          '/signUp': (_) => SignUpPage(),
           'home': (_) => const HomePage(),
           'misBoletas': (_) => const TicketRegisterPage(),
           'boleta': (_) => const BoletasPage(),
