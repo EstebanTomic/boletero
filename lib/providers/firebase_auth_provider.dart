@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 
 class FirebaseAuthProvider {
   FirebaseAuth _auth = FirebaseAuth.instance;
@@ -25,7 +26,8 @@ class FirebaseAuthProvider {
 
       return credential.user;
     } catch (e) {
-      print("Some error occured: ");
+      print("Some error occured: ${e} ");
+      throw e;
     }
 
     return null;

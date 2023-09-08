@@ -112,13 +112,32 @@ class _LoginPageState extends State<LoginPage> {
     String email = _emailController.text;
     String password = _passwordController.text;
 
-    User? user = await _auth.signInWithEmailAndPassword(email, password);
+    try {
+      User? user = await _auth.signInWithEmailAndPassword(email, password);
 
-    if (user != null) {
-      print("User is successfully signedIn");
-      Navigator.pushNamed(context, "home");
-    } else {
-      print("Some error happend");
+      if (user != null) {
+        print("User is successfully signedIn");
+        Navigator.pushNamed(context, "home");
+      } else {
+        
+      }
+    } catch (e) {
+      print("Some error happend ${e}");
+      await showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text("Warning!"),
+            content: Text("${e}"),
+            actions: [
+              ElevatedButton(
+                onPressed: () => Navigator.pop(context),
+                child: Text("OK"),
+              ),
+            ],
+          );
+        },
+      );
     }
   }
 }
