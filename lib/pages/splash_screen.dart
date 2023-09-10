@@ -38,7 +38,7 @@ class _SplashScreenState extends State<SplashScreen> {
           future: userProvider.readToken(),
           builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
             if (!snapshot.hasData) {
-              return Text('Espere');
+              return Text('Cargando');
             }
             if (snapshot.data == '') {
               Future.microtask(() {

@@ -42,7 +42,7 @@ class CardGridView extends StatelessWidget {
                                   alignment: Alignment.center,
                                   child: Text(scans[i].razonSocial,
                                   style: TextStyle(
-                                      fontSize: 12, 
+                                      fontSize: 14, 
                                       fontFamily: "Roboto")
                                       ))),
                           Padding(
@@ -52,7 +52,7 @@ class CardGridView extends StatelessWidget {
                                   child: Text(
                                     "${scans[i].fecha}",
                                     style: const TextStyle(
-                                        fontSize: 14,
+                                        fontSize: 16,
                                         color: Colors.black87,
                                         fontFamily: "Roboto"),
                                   )))
@@ -66,7 +66,7 @@ class CardGridView extends StatelessWidget {
                                 scans[i].monto,
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold, 
-                                    fontSize: 16,
+                                    fontSize: 18,
                                     fontFamily: "Roboto"),
                               ))),
                       /*
