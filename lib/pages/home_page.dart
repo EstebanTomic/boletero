@@ -1,6 +1,7 @@
 import 'package:boletero/pages/ticket_register_page.dart';
 import 'package:boletero/providers/scan_list_provider.dart';
 import 'package:boletero/providers/ui_provider.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -8,10 +9,12 @@ import '../widgets/central_button.dart';
 import '../widgets/custom_navigatorbar.dart';
 //import '../widgets/scan_mobile.dart';
 
+import '../widgets/widgets.dart';
 import 'historial_page.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
+    static const String routerName = 'Home';
 
   @override
   Widget build(BuildContext context) {
@@ -30,6 +33,7 @@ class HomePage extends StatelessWidget {
         ],
       ),
       body: _HomePageBody(),
+      drawer: SideMenu(),
       bottomNavigationBar: const CustomNavigationBar(),
       // floatingActionButton: const ScanButton(),
       //floatingActionButton: const ScanMobileButton(),

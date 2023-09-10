@@ -1,0 +1,1 @@
+export 'package:boletero/widgets/side_menu.dart';

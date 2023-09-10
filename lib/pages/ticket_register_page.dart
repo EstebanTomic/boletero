@@ -4,6 +4,7 @@ import '../widgets/gridview.dart';
 
 class TicketRegisterPage extends StatelessWidget {
   const TicketRegisterPage({super.key});
+    static const String routerName = 'TicketRegister';
 
   @override
   Widget build(BuildContext context) {

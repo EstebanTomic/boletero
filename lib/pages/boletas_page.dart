@@ -9,9 +9,11 @@ import 'package:share_plus/share_plus.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:screenshot/screenshot.dart';
 
+import 'pages.dart';
+
 class BoletasPage extends StatelessWidget {
   const BoletasPage({super.key});
-
+  static const String routerName = 'Boletas';
   @override
   Widget build(BuildContext context) {
     final ScanModel scan =
@@ -53,6 +55,7 @@ class BoletasPage extends StatelessWidget {
               ),
             ),
             ShareButton(controller: controller),
+            BackButton(),
           ],
         ));
   }
@@ -231,6 +234,22 @@ class ShareButton extends StatelessWidget {
           await saveAndShare(image);
         },
         icon: Icon(Icons.share),
+      ),
+    );
+  }
+}
+
+class BackButton extends StatelessWidget {
+  const BackButton({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      child: IconButton(
+        onPressed: () {
+          Navigator.pushNamed(context, HomePage.routerName);
+        },
+        icon: Icon(Icons.arrow_back),
       ),
     );
   }

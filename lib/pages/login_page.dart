@@ -1,3 +1,4 @@
+import 'package:boletero/pages/pages.dart';
 import 'package:boletero/pages/sign_up.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +8,7 @@ import '../widgets/form_container_widget.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
+  static const String routerName = 'Login';
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -14,7 +16,6 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   bool _isSigning = false;
-
   final FirebaseAuthProvider _auth = FirebaseAuthProvider();
 
   TextEditingController _emailController = TextEditingController();
@@ -37,7 +38,7 @@ class _LoginPageState extends State<LoginPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                "Login",
+                "Boletero",
                 style: TextStyle(fontSize: 27, fontWeight: FontWeight.bold),
               ),
               SizedBox(
@@ -82,7 +83,7 @@ class _LoginPageState extends State<LoginPage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text("Don't have an account?"),
+                  Text("¿Aún no tienes cuenta?,"),
                   SizedBox(
                     width: 5,
                   ),
@@ -95,7 +96,7 @@ class _LoginPageState extends State<LoginPage> {
                             (route) => false);
                       },
                       child: Text(
-                        "Sign Up",
+                        "Inscríbete aquí",
                         style: TextStyle(
                             color: Colors.black87, fontWeight: FontWeight.bold),
                       ))
@@ -117,7 +118,8 @@ class _LoginPageState extends State<LoginPage> {
 
       if (user != null) {
         print("User is successfully signedIn");
-        Navigator.pushNamed(context, "home");
+        Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => HomePage()));
       } else {
         
       }

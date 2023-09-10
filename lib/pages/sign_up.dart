@@ -1,4 +1,5 @@
 import 'package:boletero/pages/login_page.dart';
+import 'package:boletero/pages/pages.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -7,6 +8,7 @@ import '../widgets/form_container_widget.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
+  static const String routerName = 'SignUp';
 
   @override
   State<SignUpPage> createState() => _SignUpPageState();
@@ -37,7 +39,7 @@ class _SignUpPageState extends State<SignUpPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                "Sign Up",
+                "Regístrate",
                 style: TextStyle(fontSize: 27, fontWeight: FontWeight.bold),
               ),
               SizedBox(
@@ -78,7 +80,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   ),
                   child: Center(
                       child: Text(
-                    "Sign Up",
+                    "Crear",
                     style: TextStyle(
                         color: Colors.white, fontWeight: FontWeight.bold),
                   )),
@@ -90,7 +92,7 @@ class _SignUpPageState extends State<SignUpPage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text("Already have an account?"),
+                  Text("¿Ya tienes tu cuenta?,"),
                   SizedBox(
                     width: 5,
                   ),
@@ -103,7 +105,7 @@ class _SignUpPageState extends State<SignUpPage> {
                             (route) => false);
                       },
                       child: Text(
-                        "Login",
+                        "Ingresa aquí",
                         style: TextStyle(
                             color: Colors.black87, fontWeight: FontWeight.bold),
                       ))
@@ -122,10 +124,13 @@ class _SignUpPageState extends State<SignUpPage> {
     String password = _passwordController.text;
 
     User? user = await _auth.signUpWithEmailAndPassword(email, password);
+        
 
     if (user != null) {
       print("User is successfully created");
-      Navigator.pushNamed(context, "home");
+      Navigator.pushReplacement(
+                context, MaterialPageRoute(builder: (context) => HomePage()));
+
     } else {
       print("Some error happend");
     }
