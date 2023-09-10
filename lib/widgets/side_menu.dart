@@ -55,6 +55,7 @@ class SideMenu extends StatelessWidget {
                 fontWeight: FontWeight.bold)
                 ),
             onTap: () {
+              userProvider.logout();
               Navigator.pushNamed(context, LoginPage.routerName);
             },
           )
