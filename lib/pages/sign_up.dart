@@ -135,4 +135,16 @@ class _SignUpPageState extends State<SignUpPage> {
       print("Some error happend");
     }
   }
+
+  void _signUpGoogle() async {
+    final user = await _auth.signInWithGoogle();
+    if (user != null) {
+      print("User is successfully created");
+      Navigator.pushReplacement(
+                context, MaterialPageRoute(builder: (context) => HomePage()));
+
+    } else {
+      print("Some error happend");
+    }
+  }
 }

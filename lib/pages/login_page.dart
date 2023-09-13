@@ -61,7 +61,7 @@ class _LoginPageState extends State<LoginPage> {
                 height: 30,
               ),
               GestureDetector(
-                onTap: _signIn,
+                onTap: _signUpGoogle,
                 child: Container(
                   width: double.infinity,
                   height: 45,
@@ -140,6 +140,18 @@ class _LoginPageState extends State<LoginPage> {
           );
         },
       );
+    }
+  }
+
+    void _signUpGoogle() async {
+    final user = await _auth.signInWithGoogle();
+    if (user != null) {
+      print("User is successfully created");
+      Navigator.pushReplacement(
+                context, MaterialPageRoute(builder: (context) => HomePage()));
+
+    } else {
+      print("Some error happend");
     }
   }
 }
