@@ -61,7 +61,7 @@ class _LoginPageState extends State<LoginPage> {
                 height: 30,
               ),
               GestureDetector(
-                onTap: _signUpGoogle,
+                onTap: _signIn,
                 child: Container(
                   width: double.infinity,
                   height: 45,
@@ -78,12 +78,85 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
               SizedBox(
+                height: 30,
+              ),
+              // or continue with
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Divider(
+                        thickness: 0.5,
+                        color: Colors.grey[400],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                      child: Text(
+                        'O continua con',
+                        style: TextStyle(color: Colors.grey[700]),
+                      ),
+                    ),
+                    Expanded(
+                      child: Divider(
+                        thickness: 0.5,
+                        color: Colors.grey[400],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              // google + apple sign in buttons
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  // google button
+                  GestureDetector(
+                    onTap: _signUpGoogle,
+                    child: Container(
+                      padding: EdgeInsets.all(20),
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.white),
+                        borderRadius: BorderRadius.circular(16),
+                        color: Colors.grey[200],
+                      ),
+                      child: Image.asset(
+                        'assets/googleIcon.png',
+                        height: 40,
+                      ),
+                    ),
+                  ),
+                  SizedBox(width: 25),
+                  GestureDetector(
+                    //onTap: _signUpGoogle,
+                    child: Container(
+                      padding: EdgeInsets.all(20),
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.white),
+                        borderRadius: BorderRadius.circular(16),
+                        color: Colors.grey[200],
+                      ),
+                      child: Image.asset(
+                        'assets/macIcon.png',
+                        height: 40,
+                      ),
+                    ),
+                  ),
+                  // apple button
+                ],
+              ),
+
+              SizedBox(
                 height: 20,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text("¿Aún no tienes cuenta?,"),
+                  Text("¿No tienes cuenta?,"),
                   SizedBox(
                     width: 5,
                   ),
@@ -101,7 +174,7 @@ class _LoginPageState extends State<LoginPage> {
                             color: Colors.black87, fontWeight: FontWeight.bold),
                       ))
                 ],
-              )
+              ),
             ],
           ),
         ),
