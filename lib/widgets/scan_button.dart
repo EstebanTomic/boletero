@@ -1,9 +1,13 @@
+import 'package:boletero/models/boleta_model.dart';
+import 'package:boletero/providers/boleta_provider.dart';
 import 'package:boletero/providers/scan_list_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:xml/xml.dart' as xml;
 import 'package:intl/intl.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 
 class ScanButton extends StatelessWidget {
   const ScanButton({super.key});
@@ -14,10 +18,9 @@ class ScanButton extends StatelessWidget {
       elevation: 0,
       child: const Icon(Icons.filter_center_focus),
       onPressed: () async {
-      // LLamado a Camara
-      String barcodeScanRes = await FlutterBarcodeScanner.scanBarcode('#000000', 'Cancelar', false, ScanMode.BARCODE);
+        // LLamado a Camara
+        //  String barcodeScanRes = await FlutterBarcodeScanner.scanBarcode('#000000', 'Cancelar', false, ScanMode.BARCODE);
 
-/*
         // Respuesta de prueba
         String barcodeScanRes = '''
 <TED version= 1.0>
@@ -33,7 +36,7 @@ class ScanButton extends StatelessWidget {
     <CAF version='1.0'>
     <DA>
       <RE>77215640-5</RE>
-      <RS>ADMINISTRADORA DE VENTAS AL DETALLE LIMI</RS>
+      <RS>ADMINISTRADORA DE VENTAS AL DETALLE LIMITADA</RS>
       <TD>39</TD>
       <RNG>
         <D>433081956</D>
@@ -53,8 +56,6 @@ class ScanButton extends StatelessWidget {
   <FRMT algoritmo='SHA1withRSA'>22QKSD2MfSWGAa5XUmUilq/Rs1iKfVi6fMhMt/zstH5ge0os9MkHi979+sq0KHluhwCLNnNZgF+Dagy75G5MBQ==</FRMT>
 </TED>
         ''';
-          */
-      
 
         debugPrint('resultado: $barcodeScanRes');
         // Si es -1 no hacemos nada, es el boton cancelar
@@ -69,13 +70,18 @@ class ScanButton extends StatelessWidget {
           // Extraemos data desde parseo
           final ted = document.findElements('TED').first;
           final dd = ted.findElements('DD').first;
+          final caf = dd.findElements('CAF').first;
+          final da = caf.findElements('DA').first;
           final rut = dd.findElements('RE').first.innerText.toString();
           final monto = dd.findElements('MNT').first.innerText.toString();
           final folio = dd.findElements('F').first.innerText.toString();
           final fecha = dd.findElements('FE').first.innerText.toString();
+          final razonSocial = da.findElements('RS').first.innerText.toString();
 
           //TODO: Generar Helpers para Formatos
-          final montoFormatted = NumberFormat.currency(name: 'CLP', decimalDigits: 0, symbol: '\$').format(int.parse(monto));
+          final montoFormatted =
+              NumberFormat.currency(name: 'CLP', decimalDigits: 0, symbol: '\$')
+                  .format(int.parse(monto));
           // final montoFormatted = NumberFormat.simpleCurrency(name: 'es_US').format(int.parse(monto));
 
           final DateTime fechaDT = DateTime.parse(fecha);
@@ -86,31 +92,51 @@ class ScanButton extends StatelessWidget {
           switch (rut) {
             case '92642000-3':
               empresa = 'Librería Nacional';
-            break;
+              break;
             case '76031071-9':
               empresa = 'Salcobrand';
-            break;
+              break;
             case '77215640-5':
               empresa = 'Copec';
-            break;
+              break;
             case '76833720-9':
               empresa = 'Acuenta';
-            break;
+              break;
             case '77482034-5':
               empresa = 'Muvap';
-            break;
+              break;
           }
 
-
-          // Guardamos en la BD
+          // Guardamos en la BD Local
           final scanListProvider =
               Provider.of<ScanListProvider>(context, listen: false);
-          scanListProvider.newScan(barcodeScanRes, montoFormatted, rut, folio, fechaFormatted, empresa);
+          scanListProvider.newScan(barcodeScanRes, montoFormatted, rut, folio,
+              fechaFormatted, empresa, razonSocial);
           debugPrint('rut: $rut');
           debugPrint('monto: $montoFormatted');
           debugPrint('folio: $folio');
           debugPrint('fecha: $fechaFormatted');
           debugPrint('empresa: $empresa');
+
+
+          // Guardamos en DB firebase
+          final boletaRepo = Get.put(BoletaRepository());
+          final boleta = BoletaModel(xml: document.toString(), monto: monto, rut: rut, folio: folio, fecha: fecha, empresa: empresa, razonSocial: razonSocial);
+          await boletaRepo.createBoleta(boleta);
+
+          // Generamos Analytics
+          final FirebaseAnalytics analytics = FirebaseAnalytics.instance;
+          await analytics.logEvent(
+            name: "register_boleta",
+            parameters: {
+              "content_type": "boleta",
+              "rut": rut,
+              "monto": montoFormatted,
+              "folio": folio,
+              "fecha": fechaFormatted,
+              "empresa": empresa,
+            },
+          );
         }
       },
     );

@@ -1,5 +1,5 @@
 name: boletero
-description: A new Flutter project.
+description: Proyecto desarrollado con Flutter que permite el almacenamiento y captura de boletas.
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
@@ -16,7 +16,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
 # In Windows, build-name is used as the major, minor, and patch parts
 # of the product and file versions while build-number is used as the build suffix.
-version: 1.0.0+1
+version: 1.0.2+1
 
 environment:
   sdk: '>=3.0.5 <4.0.0'
@@ -31,7 +31,6 @@ dependencies:
   flutter:
     sdk: flutter
 
-
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
@@ -41,6 +40,20 @@ dependencies:
   sqflite: ^2.2.8+4
   xml: ^6.3.0
   intl: ^0.18.1
+  barcode_widget: ^2.0.4
+  share_plus: ^7.0.2
+  screenshot: ^2.1.0
+  image_gallery_saver: ^2.0.3
+  html: ^0.15.4
+  flutter_speed_dial: ^7.0.0
+  firebase_core: ^2.15.1
+  firebase_crashlytics: ^3.3.5
+  firebase_analytics: ^10.4.5
+  firebase_auth: ^4.9.0
+  cloud_firestore: ^4.9.1
+  google_sign_in: ^6.1.5
+  get: ^4.6.5
+  flutter_secure_storage: ^9.0.0
 
 dev_dependencies:
   flutter_test:

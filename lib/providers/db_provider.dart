@@ -18,7 +18,7 @@ class DBProvider {
   Future<Database> initDB() async {
     // Path de donde almacenamos la BD
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
-    final path = join(documentsDirectory.path, 'BDB.db');
+    final path = join(documentsDirectory.path, 'BDB2.db');
     debugPrint('path: $path');
 
     // Crear base de datos
@@ -33,7 +33,8 @@ class DBProvider {
               rut TEXT,
               folio TEXT,
               fecha TEXT,
-              empresa TEXT
+              empresa TEXT,
+              razonSocial TEXT
             )
           ''');
     });
