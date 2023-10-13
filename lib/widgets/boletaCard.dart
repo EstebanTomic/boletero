@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../pages/boletas_page.dart';
 import '../providers/scan_list_provider.dart';
 
 class boletaCardView extends StatelessWidget {
@@ -42,7 +43,7 @@ class boletaCardView extends StatelessWidget {
                           TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                     ),
                     //onTap: () => print(scans[i].id.toString()),
-                    onTap: () => Navigator.pushNamed(context, 'boleta',
+                    onTap: () => Navigator.pushNamed(context, BoletasPage.routerName,
                         arguments: scans[i])),
               ),
             ));

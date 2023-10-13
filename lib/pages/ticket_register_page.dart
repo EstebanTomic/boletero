@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../widgets/boletaCard.dart';
 import '../widgets/gridview.dart';
 
 class TicketRegisterPage extends StatelessWidget {
@@ -15,7 +16,8 @@ class TicketRegisterPage extends StatelessWidget {
         child: GlowingOverscrollIndicator(
           axisDirection: AxisDirection.down,
           color: Colors.black87,
-          child: CardGridView(),
+          //child: CardGridView(),
+          child: boletaCardView(),
           // boletaCardView(),
         ));
   }

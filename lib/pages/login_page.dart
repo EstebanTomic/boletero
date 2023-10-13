@@ -61,7 +61,7 @@ class _LoginPageState extends State<LoginPage> {
                 height: 30,
               ),
               GestureDetector(
-                onTap: _signUpGoogle,
+                onTap: _signIn,
                 child: Container(
                   width: double.infinity,
                   height: 45,
@@ -78,12 +78,82 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
               SizedBox(
+                height: 30,
+              ),
+              // or continue with
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Divider(
+                        thickness: 0.5,
+                        color: Colors.grey[400],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                      child: Text(
+                        'O continua con',
+                        style: TextStyle(color: Colors.grey[700]),
+                      ),
+                    ),
+                    Expanded(
+                      child: Divider(
+                        thickness: 0.5,
+                        color: Colors.grey[400],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(
                 height: 20,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text("¿Aún no tienes cuenta?,"),
+                  GestureDetector(
+                    onTap: _signUpGoogle,
+                    child: Container(
+                      padding: EdgeInsets.all(20),
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.white),
+                        borderRadius: BorderRadius.circular(16),
+                        color: Colors.grey[200],
+                      ),
+                      child: Image.asset(
+                        'assets/googleIcon.png',
+                        height: 40,
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 25,
+                  ),
+                  GestureDetector(
+                    child: Container(
+                      padding: EdgeInsets.all(20),
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.white),
+                        borderRadius: BorderRadius.circular(16),
+                        color: Colors.grey[200],
+                      ),
+                      child: Image.asset(
+                        'assets/macIcon.png',
+                        height: 40,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 40,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text("¿No tienes cuenta?,"),
                   SizedBox(
                     width: 5,
                   ),
@@ -119,10 +189,8 @@ class _LoginPageState extends State<LoginPage> {
       if (user != null) {
         print("User is successfully signedIn");
         Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => HomePage()));
-      } else {
-        
-      }
+            context, MaterialPageRoute(builder: (context) => HomePage()));
+      } else {}
     } catch (e) {
       print("Some error happend ${e}");
       await showDialog(
@@ -143,13 +211,12 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
-    void _signUpGoogle() async {
+  void _signUpGoogle() async {
     final user = await _auth.signInWithGoogle();
     if (user != null) {
       print("User is successfully created");
       Navigator.pushReplacement(
-                context, MaterialPageRoute(builder: (context) => HomePage()));
-
+          context, MaterialPageRoute(builder: (context) => HomePage()));
     } else {
       print("Some error happend");
     }
