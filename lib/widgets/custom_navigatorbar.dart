@@ -13,7 +13,7 @@ class CustomNavigationBar extends StatelessWidget {
 
     return BottomNavigationBar(
       onTap: (int i) => uiProvider.selectedMenuOpt = i,
-      selectedItemColor: Colors.black87,
+      selectedItemColor: Color.fromARGB(205, 0, 115, 198),
       unselectedItemColor: Colors.grey,
       currentIndex: currentIndex,
       elevation: 0,

@@ -62,7 +62,7 @@ class _FormContainerWidgetState extends State<FormContainerWidget> {
             child: widget.isPasswordField == true
                 ? Icon(
                     _obscureText ? Icons.visibility_off : Icons.visibility,
-                    color: _obscureText == false ? Colors.black87 : Colors.grey,
+                    color: _obscureText == false ? Color.fromARGB(205, 0, 115, 198) : Colors.grey,
                   )
                 : Text(""),
           ),

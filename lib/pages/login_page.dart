@@ -37,9 +37,9 @@ class _LoginPageState extends State<LoginPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(
-                "Boletero",
-                style: TextStyle(fontSize: 27, fontWeight: FontWeight.bold),
+              Image.asset(
+                'assets/icon/newIcon2.png',
+                height: 150,
               ),
               SizedBox(
                 height: 30,
@@ -66,7 +66,7 @@ class _LoginPageState extends State<LoginPage> {
                   width: double.infinity,
                   height: 45,
                   decoration: BoxDecoration(
-                    color: Colors.black87,
+                    color: Color.fromARGB(205, 0, 115, 198),
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: Center(
@@ -78,7 +78,7 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
               SizedBox(
-                height: 30,
+                height: 20,
               ),
               // or continue with
               Padding(
@@ -124,7 +124,7 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       child: Image.asset(
                         'assets/googleIcon.png',
-                        height: 40,
+                        height: 30,
                       ),
                     ),
                   ),
@@ -141,14 +141,14 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       child: Image.asset(
                         'assets/macIcon.png',
-                        height: 40,
+                        height: 30,
                       ),
                     ),
                   ),
                 ],
               ),
               SizedBox(
-                height: 40,
+                height: 25,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -168,7 +168,7 @@ class _LoginPageState extends State<LoginPage> {
                       child: Text(
                         "Inscríbete aquí",
                         style: TextStyle(
-                            color: Colors.black87, fontWeight: FontWeight.bold),
+                            color: Color.fromARGB(205, 0, 115, 198), fontWeight: FontWeight.bold),
                       ))
                 ],
               )

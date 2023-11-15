@@ -1,6 +1,5 @@
 import 'package:boletero/pages/pages.dart';
 import 'package:boletero/pages/sign_up.dart';
-import 'package:boletero/pages/splash_screen.dart';
 import 'package:boletero/providers/firebase_auth_provider.dart';
 import 'package:boletero/providers/scan_list_provider.dart';
 import 'package:boletero/providers/ui_provider.dart';
@@ -31,6 +30,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    const bgColor = Color.fromARGB(205, 0, 115, 198);
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => UiProvider()),
@@ -42,10 +42,7 @@ class MyApp extends StatelessWidget {
         title: 'Boletero',
         initialRoute: '/',
         routes: {
-          '/': (_) => SplashScreen(
-                // Here, you can decide whether to show the LoginPage or HomePage based on user authentication
-                child: LoginPage(),
-              ),
+          '/': (_) =>  const LoginPage(),
           LoginPage.routerName : (_) => LoginPage(),
           SignUpPage.routerName: (_) => SignUpPage(),
           HomePage.routerName: (_) => HomePage(),
@@ -53,12 +50,13 @@ class MyApp extends StatelessWidget {
           BoletasPage.routerName: (_) => const BoletasPage(),
         },
         theme: ThemeData(
-          primaryColor: Colors.black87,
+          primaryColor: bgColor,
+          scaffoldBackgroundColor: Colors.white,
           floatingActionButtonTheme: const FloatingActionButtonThemeData(
-              backgroundColor: Colors.black87),
+              backgroundColor: bgColor),
           appBarTheme: const AppBarTheme(
             iconTheme: IconThemeData(color: Colors.white),
-            color: Colors.black87, //<-- SEE HERE
+            color: bgColor, //<-- SEE HERE
           ),
         ),
       ),

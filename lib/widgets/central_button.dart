@@ -64,7 +64,7 @@ class CentralButton extends StatelessWidget {
       shape: const StadiumBorder(),
       children: [
         SpeedDialChild(
-          child: const Icon(Icons.filter_center_focus),
+          child: const Icon(Icons.barcode_reader),
           label: 'Escanea Timbre SII',
           onTap: () => _triggerScan(context, false),
           onLongPress: () => debugPrint('Escaner LONG PRESS'),
@@ -77,7 +77,7 @@ class CentralButton extends StatelessWidget {
           onTap: () => debugPrint('Ingreso Manual'),
         ),
         SpeedDialChild(
-          child: !rmicons ? const Icon(Icons.margin) : null,
+          child: !rmicons ? const Icon(Icons.document_scanner) : null,
           backgroundColor: Colors.red[200],
           foregroundColor: Colors.white,
           label: 'Ingresar MOCK',

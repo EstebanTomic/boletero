@@ -15,7 +15,7 @@ class TicketRegisterPage extends StatelessWidget {
         behavior: ScrollBehavior(),
         child: GlowingOverscrollIndicator(
           axisDirection: AxisDirection.down,
-          color: Colors.black87,
+          color: Color.fromARGB(205, 0, 115, 198),
           //child: CardGridView(),
           child: boletaCardView(),
           // boletaCardView(),
