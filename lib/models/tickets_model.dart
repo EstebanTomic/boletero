@@ -1,4 +1,4 @@
-class TicketModel {
+class TicketsModel {
   String? id;
   String xml;
   String monto;
@@ -8,8 +8,9 @@ class TicketModel {
   String empresa;
   String razonSocial;
   String? idUsuario;
+  String fechaCreacion;
 
-  TicketModel({
+  TicketsModel({
     this.id,
     required this.xml,
     required this.monto,
@@ -19,19 +20,20 @@ class TicketModel {
     required this.empresa,
     required this.razonSocial,
     this.idUsuario,
-  }) { }
-
+    required this.fechaCreacion,
+  });
 
   toJson() {
     return {
-        "valor": xml,
-        "monto": monto,
-        "rut": rut,
-        "folio": folio,
-        "fecha": fecha,
-        "empresa": empresa,
-        "razonSocial": razonSocial,
-        "idUsuario": idUsuario,
-      };   
+      "valor": xml,
+      "monto": monto,
+      "rut": rut,
+      "folio": folio,
+      "fecha": fecha,
+      "empresa": empresa,
+      "razonSocial": razonSocial,
+      "idUsuario": idUsuario,
+      "fechaCreacion": fechaCreacion
+    };
   }
 }

@@ -2,6 +2,7 @@ import 'package:boletero/pages/pages.dart';
 import 'package:boletero/pages/sign_up.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../providers/firebase_auth_provider.dart';
 import '../widgets/form_container_widget.dart';
@@ -159,16 +160,20 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   GestureDetector(
                       onTap: () {
-                        Navigator.pushAndRemoveUntil(
+                        Get.to(() => const SignUpPage());
+                        /*
+                          Navigator.pushAndRemoveUntil(
                             context,
                             MaterialPageRoute(
                                 builder: (context) => SignUpPage()),
                             (route) => false);
+                        */
                       },
                       child: Text(
                         "Inscríbete aquí",
                         style: TextStyle(
-                            color: Color.fromARGB(205, 0, 115, 198), fontWeight: FontWeight.bold),
+                            color: Color.fromARGB(205, 0, 115, 198),
+                            fontWeight: FontWeight.bold),
                       ))
                 ],
               )
@@ -188,6 +193,8 @@ class _LoginPageState extends State<LoginPage> {
 
       if (user != null) {
         print("User is successfully signedIn");
+        // Get.to(() => const HomePage());
+        // Get.offAll(const HomePage());
         Navigator.pushReplacement(
             context, MaterialPageRoute(builder: (context) => HomePage()));
       } else {}
@@ -215,6 +222,7 @@ class _LoginPageState extends State<LoginPage> {
     final user = await _auth.signInWithGoogle();
     if (user != null) {
       print("User is successfully created");
+      //Get.offAll(const HomePage());
       Navigator.pushReplacement(
           context, MaterialPageRoute(builder: (context) => HomePage()));
     } else {

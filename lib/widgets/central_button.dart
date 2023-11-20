@@ -1,4 +1,4 @@
-import 'package:boletero/models/ticket_model.dart';
+import 'package:boletero/models/tickets_model.dart';
 import 'package:boletero/providers/ticket_provider.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -210,15 +210,28 @@ class CentralButton extends StatelessWidget {
       final FirebaseAuth auth = FirebaseAuth.instance;
       final User? user = auth.currentUser;
       final uid = user?.uid;
-      
+
       // Guardamos en DB firebase
-      if(!mock){
+      if (!mock) {
         // Boleta Sin usuario en tabla "boletas"
         //final boletaRepo = Get.put(BoletaRepository());
         //final boleta = BoletaModel(xml: document.toString(), monto: monto, rut: rut, folio: folio, fecha: fecha, empresa: empresa, razonSocial: razonSocial);
         //await boletaRepo.createBoleta(boleta);
+        final DateTime now = DateTime.now();
+        final DateFormat formatter = DateFormat('yyyy-MM-dd');
+        final String fechaCreacion = formatter.format(now);
         final ticketRepo = Get.put(TicketRepository());
-        final ticket = TicketModel(xml: document.toString(), monto: monto, rut: rut, folio: folio, fecha: fecha, empresa: empresa, razonSocial: razonSocial, idUsuario: uid);
+        final ticket = TicketsModel(
+          xml: document.toString(),
+          monto: monto,
+          rut: rut,
+          folio: folio,
+          fecha: fecha,
+          empresa: empresa,
+          razonSocial: razonSocial,
+          idUsuario: uid,
+          fechaCreacion: fechaCreacion,
+        );
         await ticketRepo.createTicket(ticket);
       }
     }
