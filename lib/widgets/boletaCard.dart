@@ -1,24 +1,35 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
 import '../pages/boletas_page.dart';
 import '../providers/scan_list_provider.dart';
+import '../providers/ticket_provider.dart';
 
 class boletaCardView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final scanListProvider = Provider.of<ScanListProvider>(context);
     final scans = scanListProvider.scans;
-    return ListView.builder(
-        itemCount: scans.length,
+
+    final FirebaseAuth auth = FirebaseAuth.instance;
+    final User? user = auth.currentUser;
+    final uid = user?.uid;
+
+    TicketRepository tr = Get.put(TicketRepository());
+
+    return FutureBuilder(
+      future: tr.fetchTicketDocuments(uid),
+      builder: (context, snapshot) => ListView.builder(
+        itemCount: tr.ticketsDocuments.length,
         itemBuilder: (_, i) => Dismissible(
               key: UniqueKey(),
               background: Container(
                 color: Color.fromARGB(255, 218, 45, 33),
               ),
               onDismissed: (DismissDirection direction) {
-                Provider.of<ScanListProvider>(context, listen: false)
-                    .deleteScanById(scans[i].id?.toInt() ?? 0);
+                tr.deleteTicketById(i);
               },
               child: Card(
                 margin: const EdgeInsets.all(6),
@@ -29,23 +40,26 @@ class boletaCardView extends StatelessWidget {
                     leading: Icon(Icons.text_snippet_outlined,
                         color: Theme.of(context).primaryColor),
                     title: Text(
-                        scans[i].fecha +
+                        tr.ticketsDocuments[i].fecha +
                             '\n' +
-                            scans[i].rut +
+                            tr.ticketsDocuments[i].rut +
                             '\n' +
-                            scans[i].empresa,
+                            tr.ticketsDocuments[i].empresa,
                         style: TextStyle(fontSize: 16)),
-                    subtitle: Text('Folio: ' + scans[i].folio + '\n',
+                    subtitle: Text('Folio: ' + tr.ticketsDocuments[i].folio + '\n',
                         style: TextStyle(fontSize: 14)),
                     trailing: Text(
-                      scans[i].monto,
+                      tr.ticketsDocuments[i].monto,
                       style:
                           TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                     ),
                     //onTap: () => print(scans[i].id.toString()),
-                    onTap: () => Navigator.pushNamed(context, BoletasPage.routerName,
-                        arguments: scans[i])),
+                    onTap: () => Navigator.pushNamed(
+                        context, BoletasPage.routerName,
+                        arguments: tr.ticketsDocuments[i])),
               ),
-            ));
+          )
+        ) 
+    );
   }
 }

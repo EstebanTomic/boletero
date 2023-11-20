@@ -1,4 +1,7 @@
+import 'package:boletero/models/ticket_model.dart';
+import 'package:boletero/providers/ticket_provider.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:get/get.dart';
@@ -202,14 +205,22 @@ class CentralButton extends StatelessWidget {
           "empresa": empresa,
         },
       );
+
+      // Obtenemos UUID de usuario logeado por firebase
+      final FirebaseAuth auth = FirebaseAuth.instance;
+      final User? user = auth.currentUser;
+      final uid = user?.uid;
+      
       // Guardamos en DB firebase
       if(!mock){
-        final boletaRepo = Get.put(BoletaRepository());
-        final boleta = BoletaModel(xml: document.toString(), monto: monto, rut: rut, folio: folio, fecha: fecha, empresa: empresa, razonSocial: razonSocial);
-        await boletaRepo.createBoleta(boleta);
+        // Boleta Sin usuario en tabla "boletas"
+        //final boletaRepo = Get.put(BoletaRepository());
+        //final boleta = BoletaModel(xml: document.toString(), monto: monto, rut: rut, folio: folio, fecha: fecha, empresa: empresa, razonSocial: razonSocial);
+        //await boletaRepo.createBoleta(boleta);
+        final ticketRepo = Get.put(TicketRepository());
+        final ticket = TicketModel(xml: document.toString(), monto: monto, rut: rut, folio: folio, fecha: fecha, empresa: empresa, razonSocial: razonSocial, idUsuario: uid);
+        await ticketRepo.createTicket(ticket);
       }
-
-
     }
   }
 }
