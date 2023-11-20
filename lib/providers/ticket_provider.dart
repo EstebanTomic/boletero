@@ -48,7 +48,7 @@ class TicketRepository extends GetxController {
     }
   }
 
-  deleteTicketById(int id) {
-    _db.collection('ticket').doc(id.toString()).delete();
+  deleteTicketById(String? id) {
+    _db.collection('tickets').doc(id.toString()).delete();
   }
 }
