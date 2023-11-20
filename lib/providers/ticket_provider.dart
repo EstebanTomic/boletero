@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class TicketRepository extends GetxController {
+class TicketRepository extends GetxController with StateMixin {
   final _db = FirebaseFirestore.instance;
   RxList<TicketsModel> ticketsDocuments = <TicketsModel>[].obs;
 
@@ -26,6 +26,8 @@ class TicketRepository extends GetxController {
 
   Future<void> fetchTicketDocuments(String? userId) async {
     try {
+      // make status to loading
+      change(null, status: RxStatus.loading());
       QuerySnapshot<Map<String, dynamic>> querySnapshot =
           await FirebaseFirestore.instance
               .collection('tickets')
@@ -43,6 +45,8 @@ class TicketRepository extends GetxController {
               idUsuario: doc['idUsuario'],
               fechaCreacion: doc['fechaCreacion']))
           .toList();
+      // if done, change status to success
+      change(null, status: RxStatus.success());
     } catch (e) {
       print('Error al obtener documentos: $e');
     }
