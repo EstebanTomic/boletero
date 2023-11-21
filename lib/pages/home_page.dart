@@ -3,8 +3,10 @@ import 'package:boletero/providers/scan_list_provider.dart';
 import 'package:boletero/providers/ui_provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
+import '../providers/ticket_provider.dart';
 import '../widgets/central_button.dart';
 import '../widgets/custom_navigatorbar.dart';
 //import '../widgets/scan_mobile.dart';
@@ -53,9 +55,9 @@ class _HomePageBody extends StatelessWidget {
     final currentIndex = uiProvider.selectedMenuOpt;
 
     // Usar el ScanlistProvider
-    final scanListProvider =
-        Provider.of<ScanListProvider>(context, listen: false);
-
+   // final scanListProvider =
+   // Provider.of<ScanListProvider>(context, listen: false);
+ 
     // TODO: Temporal leer BD
     //final tempScan = new ScanModel(valor: 'PRUEBA');
     //DBProvider.db.newScan(tempScan);
@@ -63,10 +65,10 @@ class _HomePageBody extends StatelessWidget {
 
     switch (currentIndex) {
       case 0:
-        scanListProvider.loadScanByType('boleta');
+     //   scanListProvider.loadScanByType('boleta');
         return const TicketRegisterPage();
       case 1:
-        scanListProvider.loadScanByType('http');
+     //   scanListProvider.loadScanByType('http');
         return const HistorialPage();
       default:
         return const TicketRegisterPage();

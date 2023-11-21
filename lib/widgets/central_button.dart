@@ -1,4 +1,7 @@
+import 'package:boletero/models/tickets_model.dart';
+import 'package:boletero/providers/ticket_provider.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:get/get.dart';
@@ -64,7 +67,7 @@ class CentralButton extends StatelessWidget {
       shape: const StadiumBorder(),
       children: [
         SpeedDialChild(
-          child: const Icon(Icons.filter_center_focus),
+          child: const Icon(Icons.barcode_reader),
           label: 'Escanea Timbre SII',
           onTap: () => _triggerScan(context, false),
           onLongPress: () => debugPrint('Escaner LONG PRESS'),
@@ -77,7 +80,7 @@ class CentralButton extends StatelessWidget {
           onTap: () => debugPrint('Ingreso Manual'),
         ),
         SpeedDialChild(
-          child: !rmicons ? const Icon(Icons.margin) : null,
+          child: !rmicons ? const Icon(Icons.document_scanner) : null,
           backgroundColor: Colors.red[200],
           foregroundColor: Colors.white,
           label: 'Ingresar MOCK',
@@ -202,14 +205,35 @@ class CentralButton extends StatelessWidget {
           "empresa": empresa,
         },
       );
+
+      // Obtenemos UUID de usuario logeado por firebase
+      final FirebaseAuth auth = FirebaseAuth.instance;
+      final User? user = auth.currentUser;
+      final uid = user?.uid;
+
       // Guardamos en DB firebase
-      if(!mock){
-        final boletaRepo = Get.put(BoletaRepository());
-        final boleta = BoletaModel(xml: document.toString(), monto: monto, rut: rut, folio: folio, fecha: fecha, empresa: empresa, razonSocial: razonSocial);
-        await boletaRepo.createBoleta(boleta);
+      if (!mock) {
+        // Boleta Sin usuario en tabla "boletas"
+        //final boletaRepo = Get.put(BoletaRepository());
+        //final boleta = BoletaModel(xml: document.toString(), monto: monto, rut: rut, folio: folio, fecha: fecha, empresa: empresa, razonSocial: razonSocial);
+        //await boletaRepo.createBoleta(boleta);
+        final DateTime now = DateTime.now();
+        final DateFormat formatter = DateFormat('yyyy-MM-dd');
+        final String fechaCreacion = formatter.format(now);
+        final ticketRepo = Get.put(TicketRepository());
+        final ticket = TicketsModel(
+          xml: document.toString(),
+          monto: monto,
+          rut: rut,
+          folio: folio,
+          fecha: fecha,
+          empresa: empresa,
+          razonSocial: razonSocial,
+          idUsuario: uid,
+          fechaCreacion: fechaCreacion,
+        );
+        await ticketRepo.createTicket(ticket);
       }
-
-
     }
   }
 }

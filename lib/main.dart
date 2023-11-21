@@ -1,6 +1,5 @@
 import 'package:boletero/pages/pages.dart';
 import 'package:boletero/pages/sign_up.dart';
-import 'package:boletero/pages/splash_screen.dart';
 import 'package:boletero/providers/firebase_auth_provider.dart';
 import 'package:boletero/providers/scan_list_provider.dart';
 import 'package:boletero/providers/ui_provider.dart';
@@ -8,6 +7,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:get/get_navigation/get_navigation.dart';
 import 'package:provider/provider.dart';
 
 import 'package:boletero/pages/boletas_page.dart';
@@ -22,7 +22,8 @@ void main() async {
   // Pass all uncaught "fatal" errors from the framework to Crashlytics
   FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
   //FlutterSecureStorage.setMockInitialValues({});
-  runApp(const MyApp());
+  //runApp(const MyApp());
+  runApp(const GetMaterialApp(home: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -31,6 +32,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    const bgColor = Color.fromARGB(205, 0, 115, 198);
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => UiProvider()),
@@ -42,23 +44,21 @@ class MyApp extends StatelessWidget {
         title: 'Boletero',
         initialRoute: '/',
         routes: {
-          '/': (_) => SplashScreen(
-                // Here, you can decide whether to show the LoginPage or HomePage based on user authentication
-                child: LoginPage(),
-              ),
-          LoginPage.routerName : (_) => LoginPage(),
+          '/': (_) => const LoginPage(),
+          LoginPage.routerName: (_) => LoginPage(),
           SignUpPage.routerName: (_) => SignUpPage(),
           HomePage.routerName: (_) => HomePage(),
           TicketRegisterPage.routerName: (_) => const TicketRegisterPage(),
           BoletasPage.routerName: (_) => const BoletasPage(),
         },
         theme: ThemeData(
-          primaryColor: Colors.black87,
-          floatingActionButtonTheme: const FloatingActionButtonThemeData(
-              backgroundColor: Colors.black87),
+          primaryColor: bgColor,
+          scaffoldBackgroundColor: Colors.white,
+          floatingActionButtonTheme:
+              const FloatingActionButtonThemeData(backgroundColor: bgColor),
           appBarTheme: const AppBarTheme(
             iconTheme: IconThemeData(color: Colors.white),
-            color: Colors.black87, //<-- SEE HERE
+            color: bgColor, //<-- SEE HERE
           ),
         ),
       ),
