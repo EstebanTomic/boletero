@@ -1,5 +1,6 @@
 import 'package:boletero/models/tickets_model.dart';
 import 'package:boletero/providers/ticket_provider.dart';
+import 'package:boletero/providers/ui_provider.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +13,7 @@ import 'package:boletero/providers/scan_list_provider.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 
 import '../models/boleta_model.dart';
+import '../pages/pages.dart';
 import '../providers/boleta_provider.dart';
 
 class CentralButton extends StatelessWidget {
@@ -19,6 +21,7 @@ class CentralButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final uiProvider = Provider.of<UiProvider>(context);
     var visible = true;
     var switchLabelPosition = false;
     var extend = false;
@@ -77,7 +80,14 @@ class CentralButton extends StatelessWidget {
           //backgroundColor: Colors.deepOrange,
           //foregroundColor: Colors.white,
           label: 'Ingreso Manual',
-          onTap: () => debugPrint('Ingreso Manual'),
+          onTap: () {
+            //ManualRegisterPage
+            //Navigator.push(
+            //  context,
+            //  MaterialPageRoute(builder: (context) => ManualRegisterPage()),
+            //);
+            uiProvider.selectedMenuOpt = 2;
+          },
         ),
         SpeedDialChild(
           child: !rmicons ? const Icon(Icons.document_scanner) : null,

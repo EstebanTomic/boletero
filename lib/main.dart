@@ -1,3 +1,4 @@
+import 'package:boletero/pages/manual_register_page.dart';
 import 'package:boletero/pages/pages.dart';
 import 'package:boletero/pages/sign_up.dart';
 import 'package:boletero/providers/firebase_auth_provider.dart';
@@ -50,6 +51,7 @@ class MyApp extends StatelessWidget {
           HomePage.routerName: (_) => HomePage(),
           TicketRegisterPage.routerName: (_) => const TicketRegisterPage(),
           BoletasPage.routerName: (_) => const BoletasPage(),
+          ManualRegisterPage.routerName: (_) => const ManualRegisterPage(),
         },
         theme: ThemeData(
           primaryColor: bgColor,

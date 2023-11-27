@@ -53,6 +53,7 @@ class TicketRepository extends GetxController with StateMixin {
   }
 
   deleteTicketById(String? id) {
+    print(_db.collection('tickets').doc(id.toString()).get());
     _db.collection('tickets').doc(id.toString()).delete();
   }
 }

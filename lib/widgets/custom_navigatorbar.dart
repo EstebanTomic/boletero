@@ -9,8 +9,8 @@ class CustomNavigationBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final uiProvider = Provider.of<UiProvider>(context);
-    final currentIndex = uiProvider.selectedMenuOpt;
-
+    var currentIndex = uiProvider.selectedMenuOpt;
+    if (currentIndex >= 2) currentIndex = 0;
     return BottomNavigationBar(
       onTap: (int i) => uiProvider.selectedMenuOpt = i,
       selectedItemColor: Color.fromARGB(205, 0, 115, 198),
@@ -19,13 +19,9 @@ class CustomNavigationBar extends StatelessWidget {
       elevation: 0,
       items: const [
         BottomNavigationBarItem(
-          icon: Icon(Icons.document_scanner),
-          label: 'Mis Boletas'
-        ),
+            icon: Icon(Icons.document_scanner), label: 'Mis Boletas'),
         BottomNavigationBarItem(
-          icon: Icon(Icons.graphic_eq_sharp),
-          label: 'Estadisticas'
-        ),
+            icon: Icon(Icons.graphic_eq_sharp), label: 'Estadisticas'),
       ],
     );
   }
