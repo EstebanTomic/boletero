@@ -3,7 +3,9 @@ import 'dart:typed_data';
 
 import 'package:barcode_widget/barcode_widget.dart';
 import 'package:boletero/models/scan_model.dart';
+import 'package:boletero/models/tickets_model.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
@@ -16,16 +18,20 @@ class BoletasPage extends StatelessWidget {
   static const String routerName = 'Boletas';
   @override
   Widget build(BuildContext context) {
-    final ScanModel scan =
-        ModalRoute.of(context)!.settings.arguments as ScanModel;
+    // final ScanModel scan =
+    //     ModalRoute.of(context)!.settings.arguments as ScanModel;
+    //
+
+    final TicketsModel ticket =
+        ModalRoute.of(context)!.settings.arguments as TicketsModel;
 
     final controller = ScreenshotController();
-    String rut = scan.rut;
-    String folio = scan.folio;
-    String razonSocial = scan.razonSocial;
-    String fecha = scan.fecha;
-    String monto = scan.monto;
-    String data = scan.valor;
+    String rut = ticket.rut;
+    String folio = ticket.folio;
+    String razonSocial = ticket.razonSocial;
+    String fecha = ticket.fecha;
+    String monto = ticket.monto;
+    String data = ticket.xml;
 
     return Scaffold(
         backgroundColor: Colors.black87,
@@ -247,6 +253,9 @@ class BackButton extends StatelessWidget {
     return Material(
       child: IconButton(
         onPressed: () {
+          //Get.toNamed('TicketRegister');
+          //Get.to(() => HomePage.routerName);
+          //Get.back(result: "result");
           Navigator.pushNamed(context, HomePage.routerName);
         },
         icon: Icon(Icons.arrow_back),
