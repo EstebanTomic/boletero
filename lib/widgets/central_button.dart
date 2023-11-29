@@ -103,8 +103,9 @@ class CentralButton extends StatelessWidget {
   }
 
   Future<void> _triggerScan(BuildContext context, mock) async {
-    String barcodeScanRes = mock
-        ? '''
+    try {
+      String barcodeScanRes = mock
+          ? '''
 <TED version= 1.0>
   <DD>
     <RE>77215640-5</RE>
@@ -138,97 +139,96 @@ class CentralButton extends StatelessWidget {
   <FRMT algoritmo='SHA1withRSA'>22QKSD2MfSWGAa5XUmUilq/Rs1iKfVi6fMhMt/zstH5ge0os9MkHi979+sq0KHluhwCLNnNZgF+Dagy75G5MBQ==</FRMT>
 </TED>
         '''
-        : await FlutterBarcodeScanner.scanBarcode(
-            '#000000', 'Cancelar', false, ScanMode.BARCODE);
+          : await FlutterBarcodeScanner.scanBarcode(
+              '#000000', 'Cancelar', false, ScanMode.BARCODE);
 
-    debugPrint('resultado: $barcodeScanRes');
-    // Si es -1 no hacemos nada, es el boton cancelar
-    if (barcodeScanRes != '-1') {
-      // Agregamos comillas a version para poder parsear como XML
-      String result =
-          barcodeScanRes.replaceAll("version= 1.0", "version= \"1.0\"");
-      //debugPrint('result: $result');
-      final document = xml.XmlDocument.parse(result);
-      debugPrint('resultadoParseado: $document');
+      debugPrint('resultado: $barcodeScanRes');
+      // Si es -1 no hacemos nada, es el boton cancelar
+      if (barcodeScanRes != '-1') {
+        // Agregamos comillas a version para poder parsear como XML
+        String result =
+            barcodeScanRes.replaceAll("version= 1.0", "version= \"1.0\"");
+        //debugPrint('result: $result');
+        final document = xml.XmlDocument.parse(result);
+        debugPrint('resultadoParseado: $document');
 
-      // Extraemos data desde parseo
-      final ted = document.findElements('TED').first;
-      final dd = ted.findElements('DD').first;
-      final caf = dd.findElements('CAF').first;
-      final da = caf.findElements('DA').first;
-      final rut = dd.findElements('RE').first.innerText.toString();
-      final monto = dd.findElements('MNT').first.innerText.toString();
-      final folio = dd.findElements('F').first.innerText.toString();
-      final fecha = dd.findElements('FE').first.innerText.toString();
-      final razonSocial = da.findElements('RS').first.innerText.toString();
+        // Extraemos data desde parseo
+        final ted = document.findElements('TED').first;
+        final dd = ted.findElements('DD').first;
+        final caf = dd.findElements('CAF').first;
+        final da = caf.findElements('DA').first;
+        final rut = dd.findElements('RE').first.innerText.toString();
+        final monto = dd.findElements('MNT').first.innerText.toString();
+        final folio = dd.findElements('F').first.innerText.toString();
+        final fecha = dd.findElements('FE').first.innerText.toString();
+        final razonSocial = da.findElements('RS').first.innerText.toString();
 
-      //TODO: Generar Helpers para Formatos
-      final montoFormatted =
-          NumberFormat.currency(name: 'CLP', decimalDigits: 0, symbol: '\$')
-              .format(int.parse(monto));
-      // final montoFormatted = NumberFormat.simpleCurrency(name: 'es_US').format(int.parse(monto));
+        //TODO: Generar Helpers para Formatos
+        final montoFormatted =
+            NumberFormat.currency(name: 'CLP', decimalDigits: 0, symbol: '\$')
+                .format(int.parse(monto));
+        // final montoFormatted = NumberFormat.simpleCurrency(name: 'es_US').format(int.parse(monto));
 
-      final DateTime fechaDT = DateTime.parse(fecha);
-      final DateFormat formatter = DateFormat('dd-MM-yyyy');
-      final String fechaFormatted = formatter.format(fechaDT);
-      String empresa = '';
+        final DateTime fechaDT = DateTime.parse(fecha);
+        final DateFormat formatter = DateFormat('dd-MM-yyyy');
+        final String fechaFormatted = formatter.format(fechaDT);
+        String empresa = '';
 
-      switch (rut) {
-        case '92642000-3':
-          empresa = 'Librería Nacional';
-          break;
-        case '76031071-9':
-          empresa = 'Salcobrand';
-          break;
-        case '77215640-5':
-          empresa = 'Copec';
-          break;
-        case '76833720-9':
-          empresa = 'Acuenta';
-          break;
-        case '77482034-5':
-          empresa = 'Muvap';
-          break;
-      }
+        switch (rut) {
+          case '92642000-3':
+            empresa = 'Librería Nacional';
+            break;
+          case '76031071-9':
+            empresa = 'Salcobrand';
+            break;
+          case '77215640-5':
+            empresa = 'Copec';
+            break;
+          case '76833720-9':
+            empresa = 'Acuenta';
+            break;
+          case '77482034-5':
+            empresa = 'Muvap';
+            break;
+        }
 
-      // Guardamos en la BD
-      final scanListProvider =
-          Provider.of<ScanListProvider>(context, listen: false);
-      scanListProvider.newScan(barcodeScanRes, montoFormatted, rut, folio,
-          fechaFormatted, empresa, razonSocial);
-      debugPrint('rut: $rut');
-      debugPrint('monto: $montoFormatted');
-      debugPrint('folio: $folio');
-      debugPrint('fecha: $fechaFormatted');
-      debugPrint('empresa: $empresa');
+        // Guardamos en la BD
+        final scanListProvider =
+            Provider.of<ScanListProvider>(context, listen: false);
+        scanListProvider.newScan(barcodeScanRes, montoFormatted, rut, folio,
+            fechaFormatted, empresa, razonSocial);
+        debugPrint('rut: $rut');
+        debugPrint('monto: $montoFormatted');
+        debugPrint('folio: $folio');
+        debugPrint('fecha: $fechaFormatted');
+        debugPrint('empresa: $empresa');
 
-      // Analytics
-      final FirebaseAnalytics analytics = FirebaseAnalytics.instance;
-      await analytics.logEvent(
-        name: "register_boleta",
-        parameters: {
-          "content_type": "boleta",
-          "rut": rut,
-          "monto": montoFormatted,
-          "folio": folio,
-          "fecha": fechaFormatted,
-          "empresa": empresa,
-        },
-      );
+        // Analytics
+        final FirebaseAnalytics analytics = FirebaseAnalytics.instance;
+        await analytics.logEvent(
+          name: "register_boleta",
+          parameters: {
+            "content_type": "boleta",
+            "rut": rut,
+            "monto": montoFormatted,
+            "folio": folio,
+            "fecha": fechaFormatted,
+            "empresa": empresa,
+          },
+        );
 
-      // Obtenemos UUID de usuario logeado por firebase
-      final FirebaseAuth auth = FirebaseAuth.instance;
-      final User? user = auth.currentUser;
-      final uid = user?.uid;
+        // Obtenemos UUID de usuario logeado por firebase
+        final FirebaseAuth auth = FirebaseAuth.instance;
+        final User? user = auth.currentUser;
+        final uid = user?.uid;
 
-      // Guardamos en DB firebase
-      if (!mock) {
+        // Guardamos en DB firebase
+        //if (!mock) {
         // Boleta Sin usuario en tabla "boletas"
         //final boletaRepo = Get.put(BoletaRepository());
         //final boleta = BoletaModel(xml: document.toString(), monto: monto, rut: rut, folio: folio, fecha: fecha, empresa: empresa, razonSocial: razonSocial);
         //await boletaRepo.createBoleta(boleta);
         final DateTime now = DateTime.now();
-        final DateFormat formatter = DateFormat('yyyy-MM-dd');
         final String fechaCreacion = formatter.format(now);
         final ticketRepo = Get.put(TicketRepository());
         final ticket = TicketsModel(
@@ -244,7 +244,25 @@ class CentralButton extends StatelessWidget {
         );
         await ticketRepo.createTicket(ticket);
         ticketRepo.update();
+        //}
       }
+    } catch (e) {
+      print(e);
+      await showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text("Warning!"),
+            content: Text("${e}"),
+            actions: [
+              ElevatedButton(
+                onPressed: () => Navigator.pop(context),
+                child: Text("OK"),
+              ),
+            ],
+          );
+        },
+      );
     }
   }
 }

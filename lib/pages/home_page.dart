@@ -1,4 +1,3 @@
-import 'package:boletero/pages/ticket_register_page.dart';
 import 'package:boletero/providers/scan_list_provider.dart';
 import 'package:boletero/providers/ui_provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -12,7 +11,6 @@ import '../widgets/custom_navigatorbar.dart';
 //import '../widgets/scan_mobile.dart';
 
 import '../widgets/widgets.dart';
-import 'historial_page.dart';
 import 'pages.dart';
 
 class HomePage extends StatelessWidget {
@@ -70,7 +68,7 @@ class _HomePageBody extends StatelessWidget {
         return const TicketRegisterPage();
       case 1:
         //   scanListProvider.loadScanByType('http');
-        return const HistorialPage();
+        return const StatisticsPage();
       case 2:
         return const ManualRegisterPage();
       default:

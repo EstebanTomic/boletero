@@ -5,7 +5,12 @@ import 'package:get/get.dart';
 
 class TicketRepository extends GetxController with StateMixin {
   final _db = FirebaseFirestore.instance;
+  var suma = 0;
+  var count = 0;
   RxList<TicketsModel> ticketsDocuments = <TicketsModel>[].obs;
+  RxInt totalMount = 0.obs;
+  RxInt totalQuantity = 0.obs;
+  RxInt avgMount = 0.obs;
 
   createTicket(TicketsModel ticket) async {
     await _db
@@ -28,6 +33,8 @@ class TicketRepository extends GetxController with StateMixin {
 
   Future<void> fetchTicketDocuments(String? userId) async {
     try {
+      suma = 0;
+      count = 0;
       // make status to loading
       change(null, status: RxStatus.loading());
       QuerySnapshot<Map<String, dynamic>> querySnapshot = await _db
@@ -46,19 +53,22 @@ class TicketRepository extends GetxController with StateMixin {
               idUsuario: doc['idUsuario'],
               fechaCreacion: doc['fechaCreacion']))
           .toList();
-      // if done, change status to success
+      for (QueryDocumentSnapshot doc in querySnapshot.docs) {
+        // Asegúrate de que el campo exista y sea numérico antes de sumarlo
+        count++;
+        if (doc.data() != null) {
+          suma += int.parse(doc['monto']);
+        }
+      }
+      totalMount.value = suma;
+      totalQuantity.value = count;
+      final avg = suma ~/ count;
+      avgMount.value = avg;
+      print('Suma: $suma');
       change(null, status: RxStatus.success());
     } catch (e) {
       print('Error al obtener documentos: $e');
       change(null, status: RxStatus.success());
-    }
-  }
-
-  deleteTicketById(String? id) {
-    try {
-      _db.collection('tickets').doc(id.toString()).delete();
-    } catch (e) {
-      print('Error al eliminar documentos: $e');
     }
   }
 
@@ -85,18 +95,5 @@ class TicketRepository extends GetxController with StateMixin {
     }
   }
 
-  deleteTicketByUuid(String? id) async {
-    try {
-      QuerySnapshot<Map<String, dynamic>> querySnapshot =
-          await FirebaseFirestore.instance
-              .collection('tickets')
-              .where('id', isEqualTo: id)
-              .get();
-      for (QueryDocumentSnapshot doc in querySnapshot.docs) {
-        await doc.reference.delete();
-      }
-    } catch (e) {
-      print('Error al eliminar documentos: $e');
-    }
-  }
+  insertTicketManual() async {}
 }
