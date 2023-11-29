@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class TicketRepository extends GetxController with StateMixin {
+class TicketController extends GetxController with StateMixin {
   final _db = FirebaseFirestore.instance;
   RxList<TicketsModel> ticketsDocuments = <TicketsModel>[].obs;
 
@@ -14,7 +14,7 @@ class TicketRepository extends GetxController with StateMixin {
         .whenComplete(() => Get.snackbar(
             'Nueva Boleta', 'La boleta se registró correctamente.',
             snackPosition: SnackPosition.TOP,
-            backgroundColor: Colors.greenAccent.withOpacity(0.5),
+            backgroundColor: Colors.greenAccent,
             colorText: Colors.white))
         .catchError((error, StackTrace) {
       Get.snackbar('Error', 'Algo ocurrió, intenta de nuevo.',
@@ -23,17 +23,17 @@ class TicketRepository extends GetxController with StateMixin {
           colorText: Colors.red);
       print(error.toString());
     });
-    fetchTicketDocuments(ticket.idUsuario);
   }
 
   Future<void> fetchTicketDocuments(String? userId) async {
     try {
       // make status to loading
       change(null, status: RxStatus.loading());
-      QuerySnapshot<Map<String, dynamic>> querySnapshot = await _db
-          .collection('tickets')
-          .where('idUsuario', isEqualTo: userId)
-          .get();
+      QuerySnapshot<Map<String, dynamic>> querySnapshot =
+          await FirebaseFirestore.instance
+              .collection('tickets')
+              .where('idUsuario', isEqualTo: userId)
+              .get();
       ticketsDocuments.value = querySnapshot.docs
           .map((doc) => TicketsModel(
               xml: doc['valor'],
@@ -50,50 +50,21 @@ class TicketRepository extends GetxController with StateMixin {
       change(null, status: RxStatus.success());
     } catch (e) {
       print('Error al obtener documentos: $e');
-      change(null, status: RxStatus.success());
     }
   }
 
   deleteTicketById(String? id) {
-    try {
-      _db.collection('tickets').doc(id.toString()).delete();
-    } catch (e) {
-      print('Error al eliminar documentos: $e');
-    }
+    print(_db.collection('tickets').doc(id.toString()).get());
+    _db.collection('tickets').doc(id.toString()).delete();
   }
 
-  deleteTicketByFields(String? userId, String rut, String folio) async {
+  deleteTicketsByUserId(String? userId) async {
     try {
-      change(null, status: RxStatus.loading());
-      await _db
-          .collection('tickets')
-          .where('idUsuario', isEqualTo: userId)
-          .where('rut', isEqualTo: rut)
-          .where('folio', isEqualTo: folio)
-          .get()
-          .then((value) {
-        value.docs.forEach((element) {
-          _db.collection("tickets").doc(element.id).delete().then((value) {
-            print("Success!");
-          });
-        });
-      });
-      // if done, change status to success
-      fetchTicketDocuments(userId);
-    } catch (e) {
-      print('Error al eliminar documentos: $e');
-    }
-  }
-
-  deleteTicketByUuid(String? id) async {
-    try {
-      QuerySnapshot<Map<String, dynamic>> querySnapshot =
-          await FirebaseFirestore.instance
-              .collection('tickets')
-              .where('id', isEqualTo: id)
-              .get();
-      for (QueryDocumentSnapshot doc in querySnapshot.docs) {
-        await doc.reference.delete();
+      CollectionReference collectionReference = _db.collection('tickets');
+      QuerySnapshot querySnapshot =
+          await collectionReference.where('idUsuario', isEqualTo: userId).get();
+      for (QueryDocumentSnapshot documentSnapshot in querySnapshot.docs) {
+        await documentSnapshot.reference.delete();
       }
     } catch (e) {
       print('Error al eliminar documentos: $e');

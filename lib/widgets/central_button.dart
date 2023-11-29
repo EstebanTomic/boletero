@@ -243,6 +243,7 @@ class CentralButton extends StatelessWidget {
           fechaCreacion: fechaCreacion,
         );
         await ticketRepo.createTicket(ticket);
+        ticketRepo.update();
       }
     }
   }

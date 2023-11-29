@@ -27,7 +27,8 @@ class boletaCardView extends StatelessWidget {
                     color: Color.fromARGB(255, 218, 45, 33),
                   ),
                   onDismissed: (DismissDirection direction) {
-                    tr.deleteTicketById(tr.ticketsDocuments[i].id);
+                    tr.deleteTicketByFields(uid, tr.ticketsDocuments[i].rut,
+                        tr.ticketsDocuments[i].folio);
                   },
                   child: Card(
                     margin: const EdgeInsets.all(6),
