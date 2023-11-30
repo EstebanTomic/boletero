@@ -6,6 +6,7 @@ import 'package:boletero/models/scan_model.dart';
 import 'package:boletero/models/tickets_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
@@ -31,7 +32,7 @@ class BoletasPage extends StatelessWidget {
     String razonSocial = ticket.razonSocial;
     String fecha = ticket.fecha;
     String monto = ticket.monto;
-    String data = ticket.xml;
+    String data = ticket.xml.trim();
 
     return Scaffold(
         backgroundColor: Colors.black87,
@@ -169,7 +170,9 @@ class DetalleCompra extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Text(
-              "Fecha de emisión: $fecha\n",
+              "Fecha de emisión: " +
+                  DateFormat('dd-MM-yyyy').format(DateTime.parse(fecha)) +
+                  "\n",
               style: const TextStyle(
                   fontSize: 18.0,
                   color: Color(0xFF000000),
@@ -178,7 +181,8 @@ class DetalleCompra extends StatelessWidget {
             Align(
               alignment: Alignment.centerRight,
               child: Text(
-                "MONTO TOTAL: $monto",
+                "MONTO TOTAL: " +
+                    NumberFormat('#,###', 'es_CL').format(int.parse(monto)),
                 style: const TextStyle(
                     fontSize: 18.0,
                     fontWeight: FontWeight.bold,
@@ -207,7 +211,7 @@ class PDF417Barcode extends StatelessWidget {
       children: [
         BarcodeWidget(
           barcode: Barcode.pdf417(),
-          data: data,
+          data: data.trim(),
           width: 330,
           height: 120,
         ),

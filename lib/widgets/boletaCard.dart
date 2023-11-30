@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../pages/boletas_page.dart';
@@ -36,20 +37,22 @@ class boletaCardView extends StatelessWidget {
                     child: ListTile(
                         //dense: true,
                         //contentPadding: const EdgeInsets.all(12),
-                        leading: Icon(Icons.text_snippet_outlined,
-                            color: Theme.of(context).primaryColor),
-                        title: Text(
-                            tr.ticketsDocuments[i].fecha +
-                                '\n' +
-                                tr.ticketsDocuments[i].rut +
-                                '\n' +
-                                tr.ticketsDocuments[i].empresa,
+                        leading: Image.asset(
+                          'assets/ticketIcon.png',
+                          width: 40,
+                          height: 40,
+                          fit: BoxFit.cover,
+                        ),
+                        title: Text(tr.ticketsDocuments[i].razonSocial + '\n',
                             style: TextStyle(fontSize: 16)),
                         subtitle: Text(
-                            'Folio: ' + tr.ticketsDocuments[i].folio + '\n',
+                            DateFormat('dd-MM-yyyy').format(DateTime.parse(
+                                    tr.ticketsDocuments[i].fecha)) +
+                                '\n',
                             style: TextStyle(fontSize: 14)),
                         trailing: Text(
-                          tr.ticketsDocuments[i].monto,
+                          NumberFormat('#,###', 'es_CL')
+                              .format(int.parse(tr.ticketsDocuments[i].monto)),
                           style: TextStyle(
                               fontWeight: FontWeight.bold, fontSize: 20),
                         ),
@@ -64,6 +67,7 @@ class boletaCardView extends StatelessWidget {
           padding: const EdgeInsets.all(10.0),
           child: new Center(child: new CircularProgressIndicator())),
     );
+
 /*
     return Obx(() {
       return ListView.builder(

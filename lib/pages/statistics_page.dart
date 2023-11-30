@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:collection/collection.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 import 'pages.dart';
 
@@ -22,6 +23,12 @@ class StatisticsPage extends StatelessWidget {
     final totalQuantity = tr.totalQuantity;
     final totalMount = tr.totalMount;
     final avgMount = tr.avgMount;
+
+    final formatAvgMount = NumberFormat('#,###', 'es_CL')
+        .format(int.parse(avgMount.value.toString()));
+
+    final formatTotalMount = NumberFormat('#,###', 'es_CL')
+        .format(int.parse(totalMount.value.toString()));
 
     return tr.obx(
       (state) {
@@ -60,7 +67,7 @@ class StatisticsPage extends StatelessWidget {
                               height: 20,
                             ),
                             Text(
-                              "Tu gasto promedio: \$ $avgMount",
+                              "Tu gasto promedio: \$ $formatAvgMount",
                               style: const TextStyle(
                                   fontSize: 20.0,
                                   color: Color.fromARGB(205, 0, 115, 198),
@@ -71,7 +78,7 @@ class StatisticsPage extends StatelessWidget {
                               height: 20,
                             ),
                             Text(
-                              "Monto Total de tus boletas: \$ $totalMount",
+                              "Monto Total de tus boletas: \$ $formatTotalMount",
                               style: const TextStyle(
                                   fontSize: 20.0,
                                   color: Color.fromARGB(205, 0, 115, 198),

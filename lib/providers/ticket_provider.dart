@@ -74,7 +74,6 @@ class TicketRepository extends GetxController with StateMixin {
 
   deleteTicketByFields(String? userId, String rut, String folio) async {
     try {
-      change(null, status: RxStatus.loading());
       await _db
           .collection('tickets')
           .where('idUsuario', isEqualTo: userId)
